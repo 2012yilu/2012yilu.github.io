@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} - 简易搜索</title>
+    <title>文章加载中 - 简易搜索</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="header">
-        <div class="logo">简易搜索</div>
+        <a href="/" class="logo">简易搜索</a>
         <form action="/search.html" method="get">
             <input type="text" name="q" class="search-box" placeholder="输入搜索关键词...">
         </form>
     </div>
 
-    <div class="article-container">
-        <h1>{{title}}</h1>
-        <div class="article-meta">
-            <span class="date">发布日期: {{date}}</span>
-        </div>
-        <div class="article-content">
-            {{{content}}}
-        </div>
-        <a href="/search.html" class="back-link">← 返回搜索结果</a>
+    <div class="article-container" id="article-container">
+        <div class="loading">正在加载文章...</div>
     </div>
 
-    <script src="/js/article.js"></script>
+    <script src="/js/article-loader.js"></script>
 </body>
 </html>
