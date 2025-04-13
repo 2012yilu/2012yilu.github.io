@@ -16,11 +16,11 @@
         "content": "<p>HTML是超文本标记语言，用于创建网页结构。CSS是层叠样式表，用于控制网页的外观。</p><p>HTML由标签组成，CSS由选择器和声明块组成。</p>"
     },
     {
-    "id": 3,
-    "slug": "javascript-intro",
-    "title": "JavaScript入门指南",
-    "date": "2023-11-10",
-    "summary": "学习JavaScript的基础语法和核心概念...",
-    "content": "<h2>什么是JavaScript</h2><p>JavaScript是一种脚本语言...</p><h2>基本语法</h2><p>变量声明、函数定义等基础内容...</p>"
+        "id": 3,
+        "slug": "github-pages-guide",
+        "title": "JavaScript入门指南",
+        "date": "2023-11-10",
+        "summary": "学习JavaScript的基础语法和核心概念...",
+        "content": "<h2>什么是JavaScript</h2><p>JavaScript是一种脚本语言...</p><h2>基本语法</h2><p>变量声明、函数定义等基础内容...</p>"
     }
 ]
