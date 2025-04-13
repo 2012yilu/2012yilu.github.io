@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="error">
                 <h2>文章参数错误</h2>
                 <p>缺少文章ID参数</p>
-                <a href="/index.html">返回搜索页</a>
+                <a href="/searth.html">返回搜索页</a>
             </div>
         `;
         return;
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h1>${article.title}</h1>
                 <div class="article-meta">发布日期: ${article.date}</div>
                 <div class="article-content">${article.content}</div>
-                <a href="/index.html" class="back-link">← 返回搜索结果</a>
+                <a href="/searth.html" class="back-link">← 返回搜索结果</a>
             `;
             
             // 设置搜索框的值（如果有）
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="error">
                     <h2>加载文章失败</h2>
                     <p>${error.message}</p>
-                    <a href="/index.html">返回搜索页</a>
+                    <a href="/searth.html">返回搜索页</a>
                 </div>
             `;
         });
