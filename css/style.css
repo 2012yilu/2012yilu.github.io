@@ -1,6 +1,6 @@
-/* 基本样式 */
+/* 基础样式 */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: Arial, sans-serif;
     line-height: 1.6;
     color: #333;
     max-width: 1200px;
@@ -36,31 +36,75 @@ body {
     max-width: 600px;
 }
 
-/* 文章页面样式 */
+/* 首页样式 */
+.index-page {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.index-page .logo {
+    font-size: 36px;
+    margin-bottom: 30px;
+}
+
+.search-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.about-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: #666;
+}
+
+/* 文章页样式 */
 .article-container {
-    margin-top: 30px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .article-meta {
     color: #666;
-    margin-bottom: 20px;
+    margin: 10px 0 20px;
     font-size: 14px;
 }
 
 .article-content {
-    font-size: 16px;
-}
-
-.article-content p {
-    margin-bottom: 15px;
+    line-height: 1.8;
 }
 
 .back-link {
     display: inline-block;
     margin-top: 30px;
     color: #4285f4;
-    text-decoration: none;
-    font-size: 14px;
+}
+
+/* 错误状态 */
+.error {
+    padding: 20px;
+    background: #ffeeee;
+    border: 1px solid #ffcccc;
+    border-radius: 5px;
+    margin: 20px 0;
+    color: #cc0000;
+}
+
+.error a {
+    color: #cc0000;
+    text-decoration: underline;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
 }
 
 /* 响应式设计 */
