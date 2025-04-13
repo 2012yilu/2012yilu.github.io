@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "title": "如何使用GitHub Pages创建网站",
+        "slug": "github-pages-guide",
+        "date": "2023-10-15",
+        "summary": "GitHub Pages是一个免费的静态网站托管服务...",
+        "content": "<p>GitHub Pages是一个免费的静态网站托管服务，可以直接从GitHub仓库托管个人、项目或组织页面。</p><p>使用步骤：1. 创建仓库 2. 上传网站文件 3. 启用GitHub Pages。</p>"
+    },
+    {
+        "id": 2,
+        "title": "HTML和CSS基础教程",
+        "slug": "html-css-basics",
+        "date": "2023-10-20",
+        "summary": "HTML是超文本标记语言，用于创建网页结构...",
+        "content": "<p>HTML是超文本标记语言，用于创建网页结构。CSS是层叠样式表，用于控制网页的外观。</p><p>HTML由标签组成，CSS由选择器和声明块组成。</p>"
+    }
+]
