@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const article = articles.find(a => a.slug === slug);
             if (!article) throw new Error('文章不存在');
             
-            document.title = `${article.title} - 简易搜索`;
+            document.title = `${article.title} - 清浅资源搜索`;
             container.innerHTML = `
                 <h1>${article.title}</h1>
                 <div class="article-meta">发布日期: ${article.date}</div>
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="error">
                     <h2>加载文章失败</h2>
                     <p>${error.message}</p>
-                    <a href="/search.html">返回搜索页</a>
+                    <a href="/index.html">返回搜索页</a>
                 </div>
             `;
         });
