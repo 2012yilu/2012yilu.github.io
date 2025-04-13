@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 简易搜索</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .logo {
+            font-size: 24px;
+            margin-right: 20px;
+            color: #4285f4;
+        }
+        .search-box {
+            flex-grow: 1;
+            height: 40px;
+            padding: 0 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">简易搜索</div>
+        <form action="search.html" method="get">
+            <input type="text" name="q" class="search-box" placeholder="输入搜索关键词...">
+        </form>
+    </div>
+
+    <h1>关于简易搜索</h1>
+    <p>简易搜索是一个基于GitHub Pages构建的简单搜索引擎演示项目。它展示了如何使用静态网站技术创建一个基本的搜索界面。</p>
+    
+    <h2>项目特点</h2>
+    <ul>
+        <li>完全静态，无需服务器</li>
+        <li>使用纯HTML、CSS和JavaScript实现</li>
+        <li>响应式设计，适配各种设备</li>
+        <li>简单易用的界面</li>
+    </ul>
+    
+    <h2>技术说明</h2>
+    <p>这个项目使用了前端技术模拟搜索功能。在实际应用中，您可能需要:</p>
+    <ol>
+        <li>连接到真正的搜索引擎API</li>
+        <li>实现后端服务处理搜索请求</li>
+        <li>建立文章索引数据库</li>
+    </ol>
+    
+    <p><a href="index.html">返回首页</a></p>
+</body>
+</html>
