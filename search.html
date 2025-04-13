@@ -4,69 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>搜索结果 - 简易搜索</title>
+    <link rel="stylesheet" href="/css/style.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        .logo {
-            font-size: 24px;
-            margin-right: 20px;
-            color: #4285f4;
-        }
-        .search-box {
-            flex-grow: 1;
-            height: 40px;
-            padding: 0 15px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 24px;
-            outline: none;
-            max-width: 600px;
-        }
+        /* 搜索页特定样式 */
         .result {
             max-width: 600px;
             margin: 0 auto 25px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .result-title {
             font-size: 20px;
             color: #1a0dab;
             text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .result-title:hover {
+            text-decoration: underline;
         }
         .result-url {
             color: #006621;
             font-size: 14px;
+            margin-bottom: 5px;
+            word-break: break-all;
         }
         .result-snippet {
             color: #545454;
             font-size: 14px;
+            line-height: 1.4;
         }
         .no-results {
             text-align: center;
             margin-top: 50px;
             color: #666;
+            font-size: 18px;
+        }
+        .search-time {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="logo">简易搜索</div>
+        <a href="/" class="logo">简易搜索</a>
         <form action="search.html" method="get">
-            <input type="text" name="q" class="search-box" value="">
+            <input type="text" name="q" class="search-box" placeholder="输入搜索关键词...">
         </form>
     </div>
 
-    <div id="results">
-        <!-- 搜索结果将在这里动态显示 -->
-        <div class="no-results">请输入搜索关键词查看结果</div>
+    <div id="results-container">
+        <div class="search-time" id="search-time"></div>
+        <div id="results">
+            <div class="no-results">请输入搜索关键词查看结果</div>
+        </div>
     </div>
 
     <script>
@@ -77,30 +72,26 @@
         // 设置搜索框的值
         document.querySelector('.search-box').value = query || '';
         
-        // 模拟数据库 - 实际应用中这里应该是从服务器获取的数据
-        const articles = [
-            { 
-                id: 1, 
-                title: '如何使用GitHub Pages创建网站', 
-                url: 'https://example.com/github-pages', 
-                content: 'GitHub Pages是一个免费的静态网站托管服务，可以直接从GitHub仓库托管个人、项目或组织页面...' 
-            },
-            { 
-                id: 2, 
-                title: 'HTML和CSS基础教程', 
-                url: 'https://example.com/html-css', 
-                content: 'HTML是超文本标记语言，用于创建网页结构。CSS是层叠样式表，用于控制网页的外观...' 
-            },
-            { 
-                id: 3, 
-                title: 'JavaScript入门指南', 
-                url: 'https://example.com/javascript', 
-                content: 'JavaScript是一种脚本语言，主要用于网页开发，可以为网页添加交互功能...' 
-            }
-        ];
+        // 显示搜索时间
+        const now = new Date();
+        document.getElementById('search-time').textContent = 
+            `找到约 ${query ? "N" : "0"} 条结果 (${now.toLocaleTimeString()} 秒)`;
+        
+        // 加载文章数据
+        fetch('/data/articles.json')
+            .then(response => response.json())
+            .then(articles => {
+                displayResults(articles);
+            })
+            .catch(error => {
+                console.error('加载文章数据失败:', error);
+                document.getElementById('results').innerHTML = `
+                    <div class="no-results">加载文章数据失败，请刷新重试</div>
+                `;
+            });
         
         // 显示搜索结果
-        function displayResults() {
+        function displayResults(articles) {
             const resultsContainer = document.getElementById('results');
             
             if (!query) {
@@ -108,23 +99,53 @@
                 return;
             }
             
-            // 简单搜索逻辑 - 在实际应用中应该使用更复杂的搜索算法
+            // 简单搜索逻辑 - 搜索标题和内容
             const filteredArticles = articles.filter(article => 
-                article.title.includes(query) || article.content.includes(query)
+                article.title.toLowerCase().includes(query.toLowerCase()) || 
+                article.content.toLowerCase().includes(query.toLowerCase()) ||
+                article.summary.toLowerCase().includes(query.toLowerCase())
             );
             
+            // 更新结果计数
+            document.querySelector('.search-time').textContent = 
+                `找到约 ${filteredArticles.length} 条结果 (${now.toLocaleTimeString()} 秒)`;
+            
             if (filteredArticles.length === 0) {
-                resultsContainer.innerHTML = `<div class="no-results">没有找到与"${query}"相关的结果</div>`;
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        没有找到与"${query}"相关的结果<br>
+                        建议：<br>
+                        - 检查输入是否正确<br>
+                        - 尝试其他关键词
+                    </div>
+                `;
                 return;
             }
             
             let html = '';
             filteredArticles.forEach(article => {
+                // 高亮匹配的关键词
+                const highlight = (text) => {
+                    if (!query) return text;
+                    const regex = new RegExp(query, 'gi');
+                    return text.replace(regex, match => 
+                        `<span class="highlight">${match}</span>`);
+                };
+                
+                const displayedSummary = highlight(article.summary);
+                const displayedTitle = highlight(article.title);
+                
                 html += `
                     <div class="result">
-                        <a href="${article.url}" class="result-title">${article.title}</a>
-                        <div class="result-url">${article.url}</div>
-                        <div class="result-snippet">${article.content.substring(0, 150)}...</div>
+                        <a href="/article-${article.slug}.html" class="result-title">
+                            ${displayedTitle}
+                        </a>
+                        <div class="result-url">
+                            ${window.location.hostname}/article-${article.slug}.html
+                        </div>
+                        <div class="result-snippet">
+                            ${displayedSummary}
+                        </div>
                     </div>
                 `;
             });
@@ -132,12 +153,11 @@
             resultsContainer.innerHTML = html;
         }
         
-        // 页面加载时显示结果
-        displayResults();
-        
         // 搜索框输入时实时搜索
-        document.querySelector('.search-box').addEventListener('input', function(e) {
-            window.location.href = `search.html?q=${encodeURIComponent(e.target.value)}`;
+        document.querySelector('.search-box').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                window.location.href = `search.html?q=${encodeURIComponent(e.target.value)}`;
+            }
         });
     </script>
 </body>
