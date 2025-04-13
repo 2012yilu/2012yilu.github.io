@@ -4,14 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>简易搜索</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap">
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 主容器 */
+        .main-container {
+            text-align: center;
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* 标题样式 */
+        .site-title {
+            font-size: 3.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .site-subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            color: #7f8c8d;
+        }
+        
+        /* 搜索框样式 */
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .search-box:focus {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .search-button {
+            margin-top: 1.5rem;
+            padding: 0.8rem 2.5rem;
+            font-size: 1rem;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        /* 底部链接 */
+        .footer-links {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .footer-link {
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: #3498db;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2.5rem;
+            }
+            
+            .site-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .search-box {
+                padding: 0.8rem 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .search-button {
+                padding: 0.7rem 2rem;
+            }
+            
+            .footer-links {
+                right: 50%;
+                transform: translateX(50%);
+                bottom: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="logo">简易搜索</div>
-    <form action="search.html" method="get">
-        <input type="text" name="q" class="search-box" placeholder="输入搜索关键词...">
-        <button type="submit" class="search-button">搜索</button>
-    </form>
-    <a href="about.html" class="about-link">关于我们</a>
+    <div class="main-container">
+        <h1 class="site-title">简易搜索</h1>
+        <p class="site-subtitle">快速找到您需要的信息</p>
+        
+        <form action="search.html" method="get" class="search-container">
+            <input type="text" name="q" class="search-box" placeholder="输入关键词搜索..." autocomplete="off">
+            <button type="submit" class="search-button">搜索</button>
+        </form>
+        
+        <div class="footer-links">
+            <a href="about.html" class="footer-link">关于我们</a>
+            <a href="#" class="footer-link">帮助中心</a>
+        </div>
+    </div>
+    
+    <script>
+        // 添加简单的交互效果
+        document.querySelector('.search-box').addEventListener('focus', function() {
+            this.placeholder = '';
+        });
+        
+        document.querySelector('.search-box').addEventListener('blur', function() {
+            if (!this.value) {
+                this.placeholder = '输入关键词搜索...';
+            }
+        });
+    </script>
 </body>
 </html>
