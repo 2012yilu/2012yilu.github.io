@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果 - 简易搜索</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .logo {
+            font-size: 24px;
+            margin-right: 20px;
+            color: #4285f4;
+        }
+        .search-box {
+            flex-grow: 1;
+            height: 40px;
+            padding: 0 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+            max-width: 600px;
+        }
+        .result {
+            max-width: 600px;
+            margin: 0 auto 25px;
+        }
+        .result-title {
+            font-size: 20px;
+            color: #1a0dab;
+            text-decoration: none;
+        }
+        .result-url {
+            color: #006621;
+            font-size: 14px;
+        }
+        .result-snippet {
+            color: #545454;
+            font-size: 14px;
+        }
+        .no-results {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">简易搜索</div>
+        <form action="search.html" method="get">
+            <input type="text" name="q" class="search-box" value="">
+        </form>
+    </div>
+
+    <div id="results">
+        <!-- 搜索结果将在这里动态显示 -->
+        <div class="no-results">请输入搜索关键词查看结果</div>
+    </div>
+
+    <script>
+        // 获取URL中的搜索参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('q');
+        
+        // 设置搜索框的值
+        document.querySelector('.search-box').value = query || '';
+        
+        // 模拟数据库 - 实际应用中这里应该是从服务器获取的数据
+        const articles = [
+            { 
+                id: 1, 
+                title: '如何使用GitHub Pages创建网站', 
+                url: 'https://example.com/github-pages', 
+                content: 'GitHub Pages是一个免费的静态网站托管服务，可以直接从GitHub仓库托管个人、项目或组织页面...' 
+            },
+            { 
+                id: 2, 
+                title: 'HTML和CSS基础教程', 
+                url: 'https://example.com/html-css', 
+                content: 'HTML是超文本标记语言，用于创建网页结构。CSS是层叠样式表，用于控制网页的外观...' 
+            },
+            { 
+                id: 3, 
+                title: 'JavaScript入门指南', 
+                url: 'https://example.com/javascript', 
+                content: 'JavaScript是一种脚本语言，主要用于网页开发，可以为网页添加交互功能...' 
+            }
+        ];
+        
+        // 显示搜索结果
+        function displayResults() {
+            const resultsContainer = document.getElementById('results');
+            
+            if (!query) {
+                resultsContainer.innerHTML = '<div class="no-results">请输入搜索关键词查看结果</div>';
+                return;
+            }
+            
+            // 简单搜索逻辑 - 在实际应用中应该使用更复杂的搜索算法
+            const filteredArticles = articles.filter(article => 
+                article.title.includes(query) || article.content.includes(query)
+            );
+            
+            if (filteredArticles.length === 0) {
+                resultsContainer.innerHTML = `<div class="no-results">没有找到与"${query}"相关的结果</div>`;
+                return;
+            }
+            
+            let html = '';
+            filteredArticles.forEach(article => {
+                html += `
+                    <div class="result">
+                        <a href="${article.url}" class="result-title">${article.title}</a>
+                        <div class="result-url">${article.url}</div>
+                        <div class="result-snippet">${article.content.substring(0, 150)}...</div>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = html;
+        }
+        
+        // 页面加载时显示结果
+        displayResults();
+        
+        // 搜索框输入时实时搜索
+        document.querySelector('.search-box').addEventListener('input', function(e) {
+            window.location.href = `search.html?q=${encodeURIComponent(e.target.value)}`;
+        });
+    </script>
+</body>
+</html>
