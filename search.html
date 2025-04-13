@@ -6,45 +6,16 @@
     <title>搜索结果 - 简易搜索</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        /* 搜索页特定样式 */
         .result {
             max-width: 600px;
             margin: 0 auto 25px;
             padding: 15px;
             border-radius: 8px;
-            background-color: #fff;
+            background: #fff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .result-title {
-            font-size: 20px;
-            color: #1a0dab;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .result-title:hover {
-            text-decoration: underline;
-        }
-        .result-url {
-            color: #006621;
-            font-size: 14px;
-            margin-bottom: 5px;
-            word-break: break-all;
-        }
-        .result-snippet {
-            color: #545454;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-        .no-results {
-            text-align: center;
-            margin-top: 50px;
+        .search-stats {
             color: #666;
-            font-size: 18px;
-        }
-        .search-time {
-            color: #666;
-            font-size: 14px;
             margin-bottom: 20px;
         }
     </style>
@@ -57,108 +28,51 @@
         </form>
     </div>
 
-    <div id="results-container">
-        <div class="search-time" id="search-time"></div>
-        <div id="results">
-            <div class="no-results">请输入搜索关键词查看结果</div>
-        </div>
+    <div id="search-results">
+        <div class="search-stats" id="search-stats"></div>
+        <div id="results"></div>
     </div>
 
     <script>
-        // 获取URL中的搜索参数
         const urlParams = new URLSearchParams(window.location.search);
-        const query = urlParams.get('q');
+        const query = urlParams.get('q') || '';
+        document.querySelector('.search-box').value = query;
         
-        // 设置搜索框的值
-        document.querySelector('.search-box').value = query || '';
+        // 显示搜索统计
+        document.getElementById('search-stats').textContent = 
+            query ? `搜索 "${query}" 的结果` : '请输入搜索关键词';
         
-        // 显示搜索时间
-        const now = new Date();
-        document.getElementById('search-time').textContent = 
-            `找到约 ${query ? "N" : "0"} 条结果 (${now.toLocaleTimeString()} 秒)`;
-        
-        // 加载文章数据
         fetch('/data/articles.json')
             .then(response => response.json())
             .then(articles => {
-                displayResults(articles);
-            })
-            .catch(error => {
-                console.error('加载文章数据失败:', error);
-                document.getElementById('results').innerHTML = `
-                    <div class="no-results">加载文章数据失败，请刷新重试</div>
-                `;
-            });
-        
-        // 显示搜索结果
-        function displayResults(articles) {
-            const resultsContainer = document.getElementById('results');
-            
-            if (!query) {
-                resultsContainer.innerHTML = '<div class="no-results">请输入搜索关键词查看结果</div>';
-                return;
-            }
-            
-            // 简单搜索逻辑 - 搜索标题和内容
-            const filteredArticles = articles.filter(article => 
-                article.title.toLowerCase().includes(query.toLowerCase()) || 
-                article.content.toLowerCase().includes(query.toLowerCase()) ||
-                article.summary.toLowerCase().includes(query.toLowerCase())
-            );
-            
-            // 更新结果计数
-            document.querySelector('.search-time').textContent = 
-                `找到约 ${filteredArticles.length} 条结果 (${now.toLocaleTimeString()} 秒)`;
-            
-            if (filteredArticles.length === 0) {
-                resultsContainer.innerHTML = `
-                    <div class="no-results">
-                        没有找到与"${query}"相关的结果<br>
-                        建议：<br>
-                        - 检查输入是否正确<br>
-                        - 尝试其他关键词
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '';
-            filteredArticles.forEach(article => {
-                // 高亮匹配的关键词
-                const highlight = (text) => {
-                    if (!query) return text;
-                    const regex = new RegExp(query, 'gi');
-                    return text.replace(regex, match => 
-                        `<span class="highlight">${match}</span>`);
-                };
+                const results = query ? 
+                    articles.filter(a => 
+                        a.title.includes(query) || 
+                        a.content.includes(query) ||
+                        a.summary.includes(query)
+                    ) : [];
                 
-                const displayedSummary = highlight(article.summary);
-                const displayedTitle = highlight(article.title);
+                document.getElementById('search-stats').textContent = 
+                    query ? `找到 ${results.length} 条关于 "${query}" 的结果` : '';
                 
-                html += `
-                    <div class="result">
-                        <a href="/article-${article.slug}.html" class="result-title">
-                            ${displayedTitle}
-                        </a>
-                        <div class="result-url">
-                            ${window.location.hostname}/article-${article.slug}.html
+                const resultsHTML = results.length ? 
+                    results.map(article => `
+                        <div class="result">
+                            <a href="article.html?id=${article.slug}" class="result-title">
+                                ${article.title}
+                            </a>
+                            <div class="result-url">
+                                ${window.location.hostname}/article.html?id=${article.slug}
+                            </div>
+                            <div class="result-snippet">
+                                ${article.summary}
+                            </div>
                         </div>
-                        <div class="result-snippet">
-                            ${displayedSummary}
-                        </div>
-                    </div>
-                `;
+                    `).join('') : 
+                    '<div class="no-results">没有找到相关结果</div>';
+                
+                document.getElementById('results').innerHTML = resultsHTML;
             });
-            
-            resultsContainer.innerHTML = html;
-        }
-        
-        // 搜索框输入时实时搜索
-        document.querySelector('.search-box').addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                window.location.href = `search.html?q=${encodeURIComponent(e.target.value)}`;
-            }
-        });
     </script>
 </body>
 </html>
