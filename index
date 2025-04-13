@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易搜索</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        .logo {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+        .search-box {
+            width: 500px;
+            height: 40px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .search-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .about-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">简易搜索</div>
+    <form action="search.html" method="get">
+        <input type="text" name="q" class="search-box" placeholder="输入搜索关键词...">
+        <br>
+        <button type="submit" class="search-button">搜索</button>
+    </form>
+    <a href="about.html" class="about-link">关于我们</a>
+</body>
+</html>
