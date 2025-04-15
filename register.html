@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>注册 - 我的网站</title>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .error { color: red; margin-top: 10px; }
+    </style>
 </head>
 <body>
     <div class="auth-container">
@@ -17,13 +20,25 @@
         <div id="errorMsg" class="error"></div>
     </div>
 
-    <script src="/js/bcrypt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
     <script src="/js/auth.js"></script>
     <script>
+        function showError(msg) {
+            document.getElementById('errorMsg').textContent = msg;
+            setTimeout(() => {
+                document.getElementById('errorMsg').textContent = '';
+            }, 5000);
+        }
+
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const username = document.getElementById('newUsername').value;
-            const password = document.getElementById('newPassword').value;
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            
+            if (!username || !password) {
+                showError('用户名和密码不能为空');
+                return;
+            }
 
             try {
                 const users = await window.auth.getUsers();
@@ -42,7 +57,8 @@
                 localStorage.setItem('currentUser', username);
                 window.location.href = '/';
             } catch (error) {
-                showError('注册失败，请重试');
+                console.error('Registration error:', error);
+                showError(`注册失败: ${error.message}`);
             }
         });
     </script>
