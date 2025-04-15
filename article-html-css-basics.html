@@ -7,6 +7,28 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <!-- 在<body>开头添加 -->
+<div class="user-status">
+    <script>
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            document.write(`
+                <span>欢迎，${currentUser}</span>
+                <button onclick="logout()">退出</button>
+            `);
+        } else {
+            document.write(`
+                <a href="/login.html">登录</a>
+                <a href="/register.html">注册</a>
+            `);
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+    </script>
+</div>
     <div class="header">
         <a href="/" class="logo">清浅资源搜索</a>
         <form action="/search.html" method="get">
