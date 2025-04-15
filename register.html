@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>注册 - 我的网站</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>新用户注册</h1>
+        <form id="registerForm">
+            <input type="text" id="newUsername" placeholder="用户名" required>
+            <input type="password" id="newPassword" placeholder="密码" required>
+            <button type="submit">注册</button>
+        </form>
+        <p>已有账号？ <a href="/login.html">立即登录</a></p>
+        <div id="errorMsg" class="error"></div>
+    </div>
+
+    <script src="/js/bcrypt.min.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+
+            try {
+                const users = await window.auth.getUsers();
+                
+                if (users.some(u => u.username === username)) {
+                    showError('用户名已存在');
+                    return;
+                }
+
+                const salt = bcrypt.genSaltSync(10);
+                const hash = bcrypt.hashSync(password, salt);
+                
+                users.push({ username, password: hash });
+                await window.auth.saveUsers(users);
+                
+                localStorage.setItem('currentUser', username);
+                window.location.href = '/';
+            } catch (error) {
+                showError('注册失败，请重试');
+            }
+        });
+    </script>
+</body>
+</html>
