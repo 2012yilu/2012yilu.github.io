@@ -1,29 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    
+    <!-- 原有的头部信息 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>搜索结果 - 清浅资源搜索</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        .result {
-            max-width: 600px;
-            margin: 0 auto 25px;
-            padding: 15px;
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .search-stats {
-            color: #666;
-            margin-bottom: 20px;
-        }
+        /* 原有的样式 */
     </style>
 </head>
 <body>
-    <!-- 在<body>开头添加 -->
-
     <div class="header">
         <a href="/" class="logo">清浅资源搜索</a>
         <form action="search.html" method="get">
@@ -36,7 +23,40 @@
         <div id="results"></div>
     </div>
 
+    <!-- 添加用户状态栏 -->
+    <div class="user-status">
+        <button id="login-button" class="login-button">登录或注册</button>
+        <span id="username" class="username" style="display: none;"></span>
+    </div>
+
     <script>
+        const clientId = 'YOUR_CLIENT_ID';
+        const redirectUri = 'https://yourdomain.com/callback.html';
+        const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}`;
+
+        const loginButton = document.getElementById('login-button');
+        const usernameSpan = document.getElementById('username');
+
+        const token = localStorage.getItem('github_token');
+        if (token) {
+            loginButton.style.display = 'none';
+            usernameSpan.style.display = 'inline';
+            // 这里可以调用 API 获取用户名并显示
+            fetch('https://api.github.com/user', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+              .then(response => response.json())
+              .then(data => {
+                    usernameSpan.textContent = data.login;
+                });
+        } else {
+            loginButton.addEventListener('click', () => {
+                window.location.href = authUrl;
+            });
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q') || '';
         document.querySelector('.search-box').value = query;
