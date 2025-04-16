@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回调页面</title>
+</head>
+<body>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const clientId = 'YOUR_CLIENT_ID';
+        const clientSecret = 'YOUR_CLIENT_SECRET';
+        const redirectUri = 'https://yourdomain.com/callback.html';
+
+        if (code) {
+            fetch('https://github.com/login/oauth/access_token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                },
+                body: JSON.stringify({
+                    client_id: clientId,
+                    client_secret: clientSecret,
+                    code: code,
+                    redirect_uri: redirectUri
+                })
+            })
+              .then(response => response.json())
+              .then(data => {
+                    const token = data.access_token;
+                    localStorage.setItem('github_token', token);
+                    window.location.href = '/'; // 重定向到主页
+                });
+        }
+    </script>
+</body>
+</html>
