@@ -26,8 +26,8 @@ app.post('/api/github-oauth', async (req, res) => {
     const response = await axios.post(
       'https://github.com/login/oauth/access_token',
       {
-        client_id: process.env.GITHUB_CLIENT_ID || 'Ov23liwKU8UwYXFIJCco',      // 从环境变量读取
-        client_secret: process.env.GITHUB_CLIENT_SECRET || 'fd4675260e32d6845a45cfe904427895ea765132', // 从环境变量读取
+        client_id: process.env.GITHUB_CLIENT_ID || 'Ov23liXVfow9KLO2fkX1',      // 从环境变量读取
+        client_secret: process.env.GITHUB_CLIENT_SECRET || 'f5bb6599fe46a0d02f850c86f51a5dc6a057afae', // 从环境变量读取
         code,
         redirect_uri: process.env.GITHUB_REDIRECT_URI || 'https://2012yilu.github.io/callback'
       },
