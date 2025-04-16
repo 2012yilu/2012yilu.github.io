@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self' https://github.com https://api.github.com;
-              script-src 'self' 'unsafe-inline';
-              style-src 'self' 'unsafe-inline';
-              img-src 'self' https://avatars.githubusercontent.com">
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文章加载中... - 清浅资源搜索</title>
+    <title>文章加载中 - 清浅资源搜索</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
+    <!-- 在<body>开头添加 -->
 
 </div>
     <div class="header">
@@ -22,13 +18,10 @@
         </form>
     </div>
 
-    <div class="article-container">
-        <h1>文章加载中...</h1>
-        <div class="article-content">
-            请稍等，正在加载文章内容...
-        </div>
+    <div class="article-container" id="article-container">
+        <div class="loading">正在加载文章...</div>
     </div>
 
-    <script src="/js/article.js"></script>
+    <script src="/js/article-loader.js"></script>
 </body>
 </html>
