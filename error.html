@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>错误</title>
+    <script>
+        const errorMap = {
+            'invalid_state': '安全验证失败，请重新登录',
+            'auth_failed': '授权流程异常，请重试',
+            'profile_error': '用户资料加载失败'
+        };
+
+        window.onload = () => {
+            const code = new URLSearchParams(location.search).get('code');
+            document.getElementById('errorMsg').textContent = 
+                errorMap[code] || '发生未知错误';
+        };
+    </script>
+</head>
+<body>
+    <div class="error-container">
+        <h2>⚠️ 系统提示</h2>
+        <p id="errorMsg"></p>
+        <a href="/login.html">返回登录页面</a>
+    </div>
+</body>
+</html>
