@@ -3,17 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>回调页面</title>
+    <title>GitHub OAuth 回调</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f6f8fa;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .success {
+            color: #2ea44f;
+        }
+        .error {
+            color: #cb2431;
+        }
+        .loading {
+            color: #0366d6;
+        }
+        button {
+            background-color: #2ea44f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #22863a;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>GitHub 登录回调</h1>
+        <div id="status">
+            <p class="loading">正在处理授权码，请稍候...</p>
+        </div>
+    </div>
+
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
+        const error = urlParams.get('error');
         const clientId = 'Ov23liwKU8UwYXFIJCco';
         const clientSecret = 'fd4675260e32d6845a45cfe904427895ea765132';
         const redirectUri = 'https://2012yilu.github.io/callback.html';
 
-        if (code) {
+        const statusEl = document.getElementById('status');
+
+        // 如果有错误参数（如用户取消授权）
+        if (error) {
+            statusEl.innerHTML = `
+                <p class="error">授权失败: ${error}</p>
+                <p>错误描述: ${urlParams.get('error_description') || '未知错误'}</p>
+                <button onclick="window.location.href='/'">返回首页</button>
+            `;
+        } 
+        // 如果有 code，尝试获取 token
+        else if (code) {
             fetch('https://github.com/login/oauth/access_token', {
                 method: 'POST',
                 headers: {
@@ -27,12 +83,40 @@
                     redirect_uri: redirectUri
                 })
             })
-              .then(response => response.json())
-              .then(data => {
-                    const token = data.access_token;
-                    localStorage.setItem('github_token', token);
-                    window.location.href = '/'; // 重定向到主页
-                });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('获取 token 失败');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.access_token) {
+                    localStorage.setItem('github_token', data.access_token);
+                    statusEl.innerHTML = `
+                        <p class="success">登录成功！</p>
+                        <p>即将跳转到首页...</p>
+                    `;
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000); // 2秒后跳转
+                } else {
+                    throw new Error(data.error || '未返回 access_token');
+                }
+            })
+            .catch(err => {
+                statusEl.innerHTML = `
+                    <p class="error">登录失败: ${err.message}</p>
+                    <button onclick="window.location.href='/'">返回首页</button>
+                `;
+                console.error('OAuth 错误:', err);
+            });
+        } 
+        // 如果既没有 code 也没有 error
+        else {
+            statusEl.innerHTML = `
+                <p class="error">无效的回调请求：未找到授权码</p>
+                <button onclick="window.location.href='/'">返回首页</button>
+            `;
         }
     </script>
 </body>
