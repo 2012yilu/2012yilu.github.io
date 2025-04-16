@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录成功</title>
+</head>
+<body>
+    <h1>欢迎，<span id="user-email"></span>！</h1>
+    <button onclick="logout()">退出登录</button>
+    <script>
+        // 检查是否已登录
+        const email = localStorage.getItem('user_email');
+        if (!email) window.location.href = 'login.html';
+        
+        document.getElementById('user-email').textContent = email;
+
+        function logout() {
+            localStorage.removeItem('user_email');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
