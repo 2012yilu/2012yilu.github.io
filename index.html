@@ -148,27 +148,7 @@
 </head>
 <body>
     <!-- 在<body>开头添加 -->
-<div class="user-status">
-    <script>
-        const currentUser = localStorage.getItem('currentUser');
-        if (currentUser) {
-            document.write(`
-                <span>欢迎，${currentUser}</span>
-                <button onclick="logout()">退出</button>
-            `);
-        } else {
-            document.write(`
-                <a href="/login.html">登录</a>
-                <a href="/register.html">注册</a>
-            `);
-        }
 
-        function logout() {
-            localStorage.removeItem('currentUser');
-            location.reload();
-        }
-    </script>
-</div>
     <div class="main-container">
         <h1 class="site-title">清浅资源搜索</h1>
         <p class="site-subtitle">快速找到您需要的信息。无广告，更纯净</p>
