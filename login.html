@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录/注册</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 0 auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background: #4285f4; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; }
+        .switch { text-align: center; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div id="login-form">
+        <h2>登录</h2>
+        <div class="form-group">
+            <input type="email" id="login-email" placeholder="邮箱">
+        </div>
+        <div class="form-group">
+            <input type="password" id="login-password" placeholder="密码">
+        </div>
+        <button onclick="login()">登录</button>
+        <div class="switch">
+            <a href="#" onclick="showRegister()">没有账号？注册</a>
+        </div>
+    </div>
+
+    <div id="register-form" style="display: none;">
+        <h2>注册</h2>
+        <div class="form-group">
+            <input type="email" id="register-email" placeholder="邮箱">
+        </div>
+        <div class="form-group">
+            <input type="password" id="register-password" placeholder="密码">
+        </div>
+        <button onclick="register()">注册</button>
+        <div class="switch">
+            <a href="#" onclick="showLogin()">已有账号？登录</a>
+        </div>
+    </div>
+
+    <!-- 加载 Supabase JS 库 -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
