@@ -70,19 +70,26 @@
         } 
         // 如果有 code，尝试获取 token
         else if (code) {
-            fetch('https://github.com/login/oauth/access_token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json'
-                },
-                body: JSON.stringify({
-                    client_id: clientId,
-                    client_secret: clientSecret,
-                    code: code,
-                    redirect_uri: redirectUri
-                })
-            })
+            if (code) {
+  fetch('https://https://github.com/2012yilu/2012yilu.github.io/blob/main/index.js/api/github-oauth', {  // 替换为你的后端地址
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.token) {
+      localStorage.setItem('github_token', data.token);
+      window.location.href = '/';
+    } else {
+      alert('登录失败: ' + (data.error || '未知错误'));
+    }
+  })
+  .catch(err => {
+    console.error('请求失败:', err);
+    alert('网络错误，请检查控制台');
+  });
+}
             .then(response => {
                 if (!response.ok) {
                     throw new Error('获取 token 失败');
