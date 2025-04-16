@@ -3,7 +3,7 @@ const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
 const SUPABASE_KEY = 'YOUR_ANON_KEY';
 
 // 初始化 Supabase 客户端
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = supabase.createClient(https://pnpfxggxidvnvslrrzsd.supabase.co, eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiIhttps://pnpfxggxidvnvslrrzsd.supabase.co);
 
 // 切换表单显示
 function showRegister() {
