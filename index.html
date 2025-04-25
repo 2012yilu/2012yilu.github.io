@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推理题</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>推理题</h1>
+        </header>
+        
+        <main id="mainContent">
+            <div class="phase-container" id="phaseContainer">
+                <!-- 期数选择将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="level-container" id="levelContainer" style="display:none;">
+                <!-- 关卡选择将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="question-container" id="questionContainer" style="display:none;">
+                <div id="questions"></div>
+                <button class="back-btn" onclick="backToLevels()">返回</button>
+                <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
+            </div>
+        </main>
+        
+        <footer>
+            <button class="help-btn" onclick="showHelp()">新手使用说明</button>
+            <button class="about-btn" onclick="showAbout()">关于</button>
+        </footer>
+    </div>
+
+    <!-- 用户协议模态框 -->
+    <div id="agreementModal" class="modal">
+        <div class="modal-content">
+            <div id="agreementText"></div>
+            <button onclick="acceptAgreement()">我同意</button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
