@@ -27,8 +27,8 @@ const gameData = {
                             answer: "B"
                         }
                     ]
-                },
-                questions: [
+                }
+                    questions: [
                         {
                             question: "1. 如果所有的猫都会飞，而咪咪是一只猫，那么咪咪会飞吗？",
                             options: ["A. 会", "B. 不会", "C. 不确定", "D. 看情况"],
