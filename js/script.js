@@ -27,7 +27,7 @@ const gameData = {
                             answer: "B"
                         }
                     ]
-                }
+                },{
                     questions: [
                         {
                             question: "1. 如果所有的猫都会飞，而咪咪是一只猫，那么咪咪会飞吗？",
