@@ -3,45 +3,454 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>推理题</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>推理题挑战 - 网页版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .header {
+            color: #1a73e8;
+            font-size: 2.5rem;
+            margin: 30px 0;
+            text-shadow: 0 2px 10px rgba(26, 115, 232, 0.1);
+        }
+
+        .level-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .level-btn {
+            width: 120px;
+            height: 120px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-btn.locked {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .level-btn.unlocked {
+            color: #1a73e8;
+        }
+
+        .level-btn.current {
+            background-color: #1a73e8;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(26, 115, 232, 0.2);
+        }
+
+        .level-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .level-status {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .question-section {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            color: #5f6368;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: #f0f2f5;
+        }
+
+        input[type="radio"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #1a73e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="radio"]:checked {
+            background-color: #1a73e8;
+            border-color: #1a73e8;
+        }
+
+        input[type="radio"]::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+            display: none;
+        }
+
+        input[type="radio"]:checked::after {
+            display: block;
+        }
+
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .back-btn,
+        .submit-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn {
+            background-color: #ff4444;
+            color: white;
+        }
+
+        .submit-btn {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .back-btn:hover,
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .help-tooltip {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #1a73e8;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .help-tooltip:hover {
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>推理题</h1>
-        </header>
-        
-        <main id="mainContent">
-            <div class="phase-container" id="phaseContainer">
-                <!-- 期数选择将通过JavaScript动态生成 -->
-            </div>
-            
-            <div class="level-container" id="levelContainer" style="display:none;">
-                <!-- 关卡选择将通过JavaScript动态生成 -->
-            </div>
-            
-            <div class="question-container" id="questionContainer" style="display:none;">
-                <div id="questions"></div>
-                <button class="back-btn" onclick="backToLevels()">返回</button>
-                <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
-            </div>
-        </main>
-        
-        <footer>
-            <button class="help-btn" onclick="showHelp()">新手使用说明</button>
-            <button class="about-btn" onclick="showAbout()">关于</button>
-        </footer>
-    </div>
-
-    <!-- 用户协议模态框 -->
-    <div id="agreementModal" class="modal">
-        <div class="modal-content">
-            <div id="agreementText"></div>
-            <button onclick="acceptAgreement()">我同意</button>
+    <h1 class="header">推理题挑战</h1>
+    
+    <div class="level-container" id="levelContainer"></div>
+    
+    <div class="question-section" id="questionSection">
+        <div id="questionContent"></div>
+        <div class="button-group">
+            <button class="back-btn" onclick="goBack()">返回关卡</button>
+            <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
         </div>
     </div>
+    
+    <div class="help-tooltip" onclick="showHelp()">?</div>
 
-    <script src="js/script.js"></script>
+    <script>
+        // 游戏数据
+        const gameData = {
+            currentLevel: 1,
+            unlockedLevel: 1,
+            levels: [
+                {
+                    title: "初级关卡",
+                    questions: [
+                        {
+                            q: "如果所有的猫都会飞，而咪咪是一只猫，那么咪咪会飞吗？",
+                            options: ["A. 会", "B. 不会", "C. 不确定", "D. 看情况"],
+                            answer: "A"
+                        },
+                        {
+                            q: "一个人从10楼摔下来却没有受伤，为什么？",
+                            options: ["A. 他有降落伞", "B. 他是超人", "C. 他从一楼摔下来", "D. 下面是水池"],
+                            answer: "C"
+                        },
+                        {
+                            q: "什么东西越洗越脏？",
+                            options: ["A. 衣服", "B. 水", "C. 抹布", "D. 碗"],
+                            answer: "B"
+                        }
+                    ]
+                },
+                {
+                    title: "中级关卡",
+                    questions: [
+                        {
+                            q: "什么东西不能吃？",
+                            options: ["A. 亏", "B. 饭", "C. 药", "D. 糖"],
+                            answer: "A"
+                        },
+                        {
+                            q: "什么东西越生气，它就越小？",
+                            options: ["A. 气球", "B. 脾气", "C. 火", "D. 年龄"],
+                            answer: "A"
+                        },
+                        {
+                            q: "什么书在书店买不到？",
+                            options: ["A. 禁书", "B. 秘书", "C. 遗书", "D. 天书"],
+                            answer: "C"
+                        }
+                    ]
+                },
+                {
+                    title: "高级关卡",
+                    questions: [
+                        {
+                            q: "小明的妈妈有三个孩子，老大叫大毛，老二叫二毛，老三叫什么？",
+                            options: ["A. 三毛", "B. 小明", "C. 小毛", "D. 毛毛"],
+                            answer: "B"
+                        },
+                        {
+                            q: "什么东西明明是你的，别人却用得比你多得多？",
+                            options: ["A. 钱", "B. 名字", "C. 衣服", "D. 房子"],
+                            answer: "B"
+                        },
+                        {
+                            q: "什么东西不能吃？",
+                            options: ["A. 亏", "B. 饭", "C. 药", "D. 糖"],
+                            answer: "A"
+                        }
+                    ]
+                },
+                {
+                    title: "专家关卡",
+                    questions: [
+                        {
+                            q: "什么东西越生气，它就越小？",
+                            options: ["A. 气球", "B. 脾气", "C. 火", "D. 年龄"],
+                            answer: "A"
+                        },
+                        {
+                            q: "什么书在书店买不到？",
+                            options: ["A. 禁书", "B. 秘书", "C. 遗书", "D. 天书"],
+                            answer: "C"
+                        },
+                        {
+                            q: "小明的妈妈有三个孩子，老大叫大毛，老二叫二毛，老三叫什么？",
+                            options: ["A. 三毛", "B. 小明", "C. 小毛", "D. 毛毛"],
+                            answer: "B"
+                        }
+                    ]
+                },
+                {
+                    title: "大师关卡",
+                    questions: [
+                        {
+                            q: "什么东西明明是你的，别人却用得比你多得多？",
+                            options: ["A. 钱", "B. 名字", "C. 衣服", "D. 房子"],
+                            answer: "B"
+                        },
+                        {
+                            q: "一个人从10楼摔下来却没有受伤，为什么？",
+                            options: ["A. 他有降落伞", "B. 他是超人", "C. 他从一楼摔下来", "D. 下面是水池"],
+                            answer: "C"
+                        },
+                        {
+                            q: "什么东西越洗越脏？",
+                            options: ["A. 衣服", "B. 水", "C. 抹布", "D. 碗"],
+                            answer: "B"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // 初始化游戏
+        function initGame() {
+            try {
+                // 加载本地存储进度
+                const savedData = localStorage.getItem("推理游戏进度");
+                if (savedData) {
+                    const progress = JSON.parse(savedData);
+                    gameData.unlockedLevel = Math.min(progress.unlockedLevel, gameData.levels.length);
+                }
+                renderLevels();
+            } catch (error) {
+                console.error("初始化错误:", error);
+                localStorage.removeItem("推理游戏进度");
+            }
+        }
+
+        // 渲染关卡按钮
+        function renderLevels() {
+            const container = document.getElementById("levelContainer");
+            container.innerHTML = "";
+
+            gameData.levels.forEach((level, index) => {
+                const btn = document.createElement("div");
+                btn.className = "level-btn";
+                btn.dataset.level = index + 1;
+
+                if (index + 1 < gameData.unlockedLevel) {
+                    btn.className += " unlocked";
+                } else if (index + 1 === gameData.unlockedLevel) {
+                    btn.className += " unlocked current";
+                } else {
+                    btn.className += " locked";
+                }
+
+                btn.innerHTML = `
+                    <div class="level-number">${index + 1}</div>
+                    <div class="level-status">${index + 1 === 1? "第一关" : "第" + (index + 1) + "关"}</div>
+                `;
+
+                btn.addEventListener("click", () => {
+                    const level = parseInt(btn.dataset.level);
+                    if (level <= gameData.unlockedLevel) {
+                        showQuestions(level);
+                    }
+                });
+
+                container.appendChild(btn);
+            });
+        }
+
+        // 显示题目
+        function showQuestions(level) {
+            gameData.currentLevel = level;
+            const section = document.getElementById("questionSection");
+            const content = document.getElementById("questionContent");
+            content.innerHTML = "";
+
+            const currentLevelData = gameData.levels[level - 1];
+            currentLevelData.questions.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.className = "question";
+                questionDiv.innerHTML = `
+                    <div class="question-title">${q.q}</div>
+                    <div class="option-group">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option">
+                                <input type="radio" name="q${index}" value="${option.charAt(0)}">
+                                <label>${option}</label>
+                            </div>
+                        `).join("")}
+                    </div>
+                `;
+                content.appendChild(questionDiv);
+            });
+
+            section.style.display = "block";
+            document.getElementById("levelContainer").style.display = "none";
+        }
+
+        // 返回关卡界面
+        function goBack() {
+            document.getElementById("questionSection").style.display = "none";
+            document.getElementById("levelContainer").style.display = "grid";
+        }
+
+        // 检查答案
+        function checkAnswers() {
+            const currentLevel = gameData.currentLevel;
+            const levelData = gameData.levels[currentLevel - 1];
+            let allCorrect = true;
+
+            levelData.questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (!selected || selected.value!== q.answer) {
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                if (currentLevel === gameData.levels.length) {
+                    alert("🎉 恭喜！你已成功通关所有关卡！\n你就是推理大师！");
+                    localStorage.removeItem("推理游戏进度"); // 通关后重置进度
+                    gameData.unlockedLevel = 1;
+                } else if (currentLevel === gameData.unlockedLevel) {
+                    gameData.unlockedLevel++;
+                    localStorage.setItem("推理游戏进度", JSON.stringify({
+                        unlockedLevel: gameData.unlockedLevel
+                    }));
+                    alert(`✅ 本关全部答对！已解锁第 ${gameData.unlockedLevel} 关！`);
+                }
+                goBack();
+                renderLevels();
+            } else {
+                alert("❌ 存在错误答案，请重新检查！");
+            }
+        }
+
+        // 显示帮助
+        function showHelp() {
+            alert("📖 新手说明：\n\n" +
+                "1. 共5个关卡，需依次解锁\n" +
+                "2. 每关3题，全部答对才能进入下一关\n" +
+                "3. 答案自动保存，下次打开可继续\n" +
+                "\n祝你挑战成功！");
+        }
+
+        // 初始化游戏
+        window.onload = initGame;
+    </script>
 </body>
 </html>
