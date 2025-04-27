@@ -18,13 +18,56 @@
             transform: scale(1.05);
             transition: transform 0.3s ease;
         }
+
+        /* 答对和答错结果样式 */
+        .correct-answer {
+            color: green;
+            font-weight: bold;
+        }
+
+        .wrong-answer {
+            color: red;
+            font-weight: bold;
+        }
+
+        /* 结果弹窗样式 */
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* 五彩商标样式 */
+        .rainbow-text {
+            background-image: linear-gradient(to right, red, orange, yellow, green, blue);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body class="bg-gray-100 font-sans">
     <!-- 导航栏 -->
     <nav class="bg-white shadow-md p-4 flex justify-between items-center">
-        <h1 class="text-xl font-bold">推理题</h1>
+        <h1 class="rainbow-text">推理题</h1>
         <input type="text" id="search-input" placeholder="搜索往期题目" class="border border-gray-300 rounded p-2">
         <button id="search-button" class="bg-blue-500 text-white p-2 rounded ml-2" onclick="searchPeriods()">搜索</button>
     </nav>
@@ -91,8 +134,17 @@
         </div>
     </div>
 
+    <!-- 结果弹窗 -->
+    <div id="result-modal" class="result-modal">
+        <div class="result-modal-content">
+            <h2 id="result-modal-title" class="text-2xl font-bold mb-4"></h2>
+            <div id="result-modal-body"></div>
+            <button class="bg-gray-300 p-2 rounded mt-4" onclick="closeResultModal()">关闭</button>
+        </div>
+    </div>
+
     <script>
-        // 模拟数据库数据
+        // 模拟数据库数据，增加了解析字段
         const database = {
             "1": {
                 "title": "第1期",
@@ -101,13 +153,15 @@
                     {
                         "type": "fill",
                         "question": "1 + 1 = __",
-                        "answer": "2"
+                        "answer": "2",
+                        "explanation": "1加1的和是2，这是基本的数学运算。"
                     },
                     {
                         "type": "choice",
                         "question": "以下哪个是水果？",
                         "options": ["苹果", "汽车", "桌子"],
-                        "answer": "苹果"
+                        "answer": "苹果",
+                        "explanation": "苹果是水果，而汽车和桌子分别属于交通工具和家具类别。"
                     }
                 ]
             },
@@ -118,13 +172,15 @@
                     {
                         "type": "fill",
                         "question": "2 + 2 = __",
-                        "answer": "4"
+                        "answer": "4",
+                        "explanation": "2加2的和是4，属于简单的加法运算。"
                     },
                     {
                         "type": "choice",
                         "question": "以下哪个是动物？",
                         "options": ["猫", "椅子", "杯子"],
-                        "answer": "猫"
+                        "answer": "猫",
+                        "explanation": "猫是动物，椅子和杯子是生活用品。"
                     }
                 ]
             },
@@ -135,13 +191,15 @@
                     {
                         "type": "fill",
                         "question": "3 + 3 = __",
-                        "answer": "6"
+                        "answer": "6",
+                        "explanation": "3加3等于6，是基础的数学加法。"
                     },
                     {
                         "type": "choice",
                         "question": "以下哪个是交通工具？",
                         "options": ["自行车", "书本", "电视"],
-                        "answer": "自行车"
+                        "answer": "自行车",
+                        "explanation": "自行车是常见的交通工具，书本用于阅读，电视是家电。"
                     }
                 ]
             },
@@ -152,13 +210,15 @@
                     {
                         "type": "fill",
                         "question": "4 + 4 = __",
-                        "answer": "8"
+                        "answer": "8",
+                        "explanation": "4加4的结果是8，属于简单加法运算。"
                     },
                     {
                         "type": "choice",
                         "question": "以下哪个是蔬菜？",
                         "options": ["胡萝卜", "手机", "鞋子"],
-                        "answer": "胡萝卜"
+                        "answer": "胡萝卜",
+                        "explanation": "胡萝卜是蔬菜，手机和鞋子分别是电子产品和服饰用品。"
                     }
                 ]
             }
@@ -167,6 +227,7 @@
         const periods = Object.keys(database);
         let currentPage = 1;
         const itemsPerPage = 5;
+        let currentPeriodId;
 
         // 显示玩法介绍
         function showPlayMethod() {
@@ -245,6 +306,7 @@
 
         // 显示详细页
         function showDetail(period) {
+            currentPeriodId = period;
             document.getElementById('home').classList.add('hidden');
             document.getElementById('all-periods').classList.add('hidden');
             document.getElementById('detail').classList.remove('hidden');
@@ -286,8 +348,11 @@
             resultDiv.innerHTML = '';
             resultDiv.classList.remove('hidden');
 
-            const currentPeriod = Object.keys(database)[0];
-            database[currentPeriod].questions.forEach((question, index) => {
+            const currentPeriod = database[currentPeriodId];
+            const correctAnswers = [];
+            const wrongAnswers = [];
+
+            currentPeriod.questions.forEach((question, index) => {
                 let userAnswer;
                 if (question.type === 'fill') {
                     userAnswer = document.getElementById(`question-${index}`).value;
@@ -304,8 +369,58 @@
                 const resultText = isCorrect ? '答对了' : '答错了';
                 const resultP = document.createElement('p');
                 resultP.textContent = `${index + 1}. ${resultText}`;
+                if (isCorrect) {
+                    resultP.classList.add('correct-answer');
+                    correctAnswers.push({ question: question.question, index: index + 1 });
+                } else {
+                    resultP.classList.add('wrong-answer');
+                    wrongAnswers.push({ question: question.question, index: index + 1, explanation: question.explanation });
+                }
                 resultDiv.appendChild(resultP);
             });
+
+            showResultModal(correctAnswers, wrongAnswers);
+        }
+
+        // 显示结果弹窗
+        function showResultModal(correctAnswers, wrongAnswers) {
+            const resultModal = document.getElementById('result-modal');
+            const resultModalTitle = document.getElementById('result-modal-title');
+            const resultModalBody = document.getElementById('result-modal-body');
+
+            resultModalBody.innerHTML = '';
+
+            if (correctAnswers.length > 0) {
+                resultModalTitle.textContent = '恭喜你，以下题目答对啦！';
+                correctAnswers.forEach(item => {
+                    const p = document.createElement('p');
+                    p.textContent = `${item.index}. ${item.question} - 答对啦，你真棒！`;
+                    p.classList.add('correct-answer');
+                    resultModalBody.appendChild(p);
+                });
+            }
+
+            if (wrongAnswers.length > 0) {
+                if (correctAnswers.length > 0) {
+                    const separator = document.createElement('hr');
+                    resultModalBody.appendChild(separator);
+                }
+                resultModalTitle.textContent = '部分题目答错啦，看看解析吧！';
+                wrongAnswers.forEach(item => {
+                    const p = document.createElement('p');
+                    p.textContent = `${item.index}. ${item.question} - 答错了，解析：${item.explanation}`;
+                    p.classList.add('wrong-answer');
+                    resultModalBody.appendChild(p);
+                });
+            }
+
+            resultModal.style.display = 'flex';
+        }
+
+        // 关闭结果弹窗
+        function closeResultModal() {
+            const resultModal = document.getElementById('result-modal');
+            resultModal.style.display = 'none';
         }
 
         // 搜索期
@@ -313,7 +428,12 @@
             const searchInput = document.getElementById('search-input').value.toLowerCase();
             const filteredPeriods = periods.filter(period => {
                 const title = database[period].title.toLowerCase();
-                return title.includes(searchInput);
+                const description = database[period].description.toLowerCase();
+                const hasMatchInQuestions = database[period].questions.some(q => {
+                    const questionText = q.question.toLowerCase();
+                    return questionText.includes(searchInput);
+                });
+                return title.includes(searchInput) || description.includes(searchInput) || hasMatchInQuestions;
             });
 
             document.getElementById('home').classList.add('hidden');
@@ -355,7 +475,7 @@
             latestPeriods.forEach(period => {
                 const periodDiv = document.createElement('div');
                 periodDiv.classList.add('bg-white', 'p-6', 'rounded', 'shadow-md', 'hover-scale', 'cursor-pointer');
-                periodDiv.innerHTML = `<h2 class="text-2xl font-bold mb-2">${database[period].title}</h2><p class="text-gray-600">${database[period].description}</p>`;
+                periodDiv.innerHTML = `<h2 class="text-2xl font-bold mb-2">最新！new ${database[period].title}</h2><p class="text-gray-600">${database[period].description}</p>`;
                 periodDiv.onclick = () => showDetail(period);
                 latestPeriodsContainer.appendChild(periodDiv);
             });
