@@ -1,64 +1,369 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <title>推理题</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 平滑滚动效果 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 悬停动画效果 */
+        .hover-scale:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <h1 class="title">推理题</h1>
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="搜索往期题目...">
-            <button id="search-btn">搜索</button>
+
+<body class="bg-gray-100 font-sans">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+        <h1 class="text-xl font-bold">推理题</h1>
+        <input type="text" id="search-input" placeholder="搜索往期题目" class="border border-gray-300 rounded p-2">
+        <button id="search-button" class="bg-blue-500 text-white p-2 rounded ml-2" onclick="searchPeriods()">搜索</button>
+    </nav>
+
+    <!-- 首页内容 -->
+    <div id="home" class="p-8">
+        <!-- 最新3期显示 -->
+        <div id="latest-periods" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- 期内容将通过 JavaScript 动态添加 -->
         </div>
-    </header>
 
-    <main>
-        <section class="latest-issue">
-            <div class="issue-card large" id="latest-issue">
-                <!-- 最新一期内容将通过JS动态加载 -->
-                <h2>第<span id="issue-number">XX</span>期</h2>
-                <p id="issue-intro">加载中...</p>
+        <!-- 玩法介绍和关于声明 -->
+        <div class="grid grid-cols-2 gap-4 mt-8">
+            <div class="bg-white p-6 rounded shadow-md hover-scale cursor-pointer" onclick="showPlayMethod()">
+                <h3 class="text-lg font-bold">玩法介绍</h3>
             </div>
-        </section>
+            <div class="bg-white p-6 rounded shadow-md hover-scale cursor-pointer" onclick="showAbout()">
+                <h3 class="text-lg font-bold">关于和声明</h3>
+            </div>
+        </div>
 
-        <section class="previous-issues">
-            <div class="issue-card" id="prev-issue-1">
-                <!-- 往期内容1将通过JS动态加载 -->
-                <h3>第<span class="prev-issue-number">XX</span>期</h3>
-                <p class="prev-issue-intro">加载中...</p>
-            </div>
-            <div class="issue-card" id="prev-issue-2">
-                <!-- 往期内容2将通过JS动态加载 -->
-                <h3>第<span class="prev-issue-number">XX</span>期</h3>
-                <p class="prev-issue-intro">加载中...</p>
-            </div>
-        </section>
+        <!-- 显示所有期按钮 -->
+        <button class="bg-blue-500 text-white p-2 rounded mt-8" onclick="showAllPeriods()">显示所有期</button>
+    </div>
 
-        <section class="info-sections">
-            <div class="info-card" id="how-to-play">
-                <h3>玩法介绍</h3>
-                <div class="content">
-                    <p>1. 选择一期推理题开始挑战</p>
-                    <p>2. 每期包含1-5道题目，有选择题和填空题</p>
-                    <p>3. 完成所有题目后提交，系统会显示你的得分</p>
-                    <p>4. 可以反复挑战，提高推理能力</p>
-                </div>
-            </div>
-            <div class="info-card" id="about">
-                <h3>关于 & 声明</h3>
-                <div class="content">
-                    <p>本网站仅供娱乐和学习使用</p>
-                    <p>题目均为原创或已获授权</p>
-                    <p>严禁将题目用于商业用途</p>
-                    <p>如有问题请联系：contact@example.com</p>
-                </div>
-            </div>
-        </section>
-    </main>
+    <!-- 详细页内容 -->
+    <div id="detail" class="p-8 hidden">
+        <!-- 题目显示 -->
+        <div id="question-container" class="bg-white p-6 rounded shadow-md mb-8">
+            <!-- 题目将通过 JavaScript 动态添加 -->
+        </div>
+        <!-- 提交答案按钮 -->
+        <button class="bg-green-500 text-white p-2 rounded" onclick="checkAnswers()">提交答案</button>
+        <!-- 结果显示 -->
+        <div id="result" class="mt-4 hidden">
+            <!-- 结果将通过 JavaScript 动态添加 -->
+        </div>
+    </div>
 
-    <script src="js/main.js"></script>
+    <!-- 所有期列表 -->
+    <div id="all-periods" class="p-8 hidden">
+        <!-- 期列表将通过 JavaScript 动态添加 -->
+        <div class="flex justify-between mt-4">
+            <button class="bg-gray-300 p-2 rounded" onclick="prevPage()">上一页</button>
+            <button class="bg-gray-300 p-2 rounded" onclick="nextPage()">下一页</button>
+        </div>
+    </div>
+
+    <!-- 玩法介绍模态框 -->
+    <div id="play-method-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden justify-center items-center">
+        <div class="bg-white p-8 rounded shadow-md">
+            <h2 class="text-2xl font-bold mb-4">玩法介绍</h2>
+            <p>每一期有最多5道推理题，包含填空和选择题。你需要在输入框或选项中选择你的答案，然后点击提交答案，系统会显示你答对和答错的题目。</p>
+            <button class="bg-gray-300 p-2 rounded mt-4" onclick="closePlayMethod()">关闭</button>
+        </div>
+    </div>
+
+    <!-- 关于和声明模态框 -->
+    <div id="about-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden justify-center items-center">
+        <div class="bg-white p-8 rounded shadow-md">
+            <h2 class="text-2xl font-bold mb-4">关于和声明</h2>
+            <p>本网站的推理题仅供娱乐，版权归开发者所有。</p>
+            <button class="bg-gray-300 p-2 rounded mt-4" onclick="closeAbout()">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        // 模拟数据库数据
+        const database = {
+            "1": {
+                "title": "第1期",
+                "description": "这是第1期推理题的简介，快来挑战吧！",
+                "questions": [
+                    {
+                        "type": "fill",
+                        "question": "1 + 1 = __",
+                        "answer": "2"
+                    },
+                    {
+                        "type": "choice",
+                        "question": "以下哪个是水果？",
+                        "options": ["苹果", "汽车", "桌子"],
+                        "answer": "苹果"
+                    }
+                ]
+            },
+            "2": {
+                "title": "第2期",
+                "description": "这是第2期推理题的简介，快来挑战吧！",
+                "questions": [
+                    {
+                        "type": "fill",
+                        "question": "2 + 2 = __",
+                        "answer": "4"
+                    },
+                    {
+                        "type": "choice",
+                        "question": "以下哪个是动物？",
+                        "options": ["猫", "椅子", "杯子"],
+                        "answer": "猫"
+                    }
+                ]
+            },
+            "3": {
+                "title": "第3期",
+                "description": "这是第3期推理题的简介，快来挑战吧！",
+                "questions": [
+                    {
+                        "type": "fill",
+                        "question": "3 + 3 = __",
+                        "answer": "6"
+                    },
+                    {
+                        "type": "choice",
+                        "question": "以下哪个是交通工具？",
+                        "options": ["自行车", "书本", "电视"],
+                        "answer": "自行车"
+                    }
+                ]
+            },
+            "4": {
+                "title": "第4期",
+                "description": "这是第4期推理题的简介，快来挑战吧！",
+                "questions": [
+                    {
+                        "type": "fill",
+                        "question": "4 + 4 = __",
+                        "answer": "8"
+                    },
+                    {
+                        "type": "choice",
+                        "question": "以下哪个是蔬菜？",
+                        "options": ["胡萝卜", "手机", "鞋子"],
+                        "answer": "胡萝卜"
+                    }
+                ]
+            }
+        };
+
+        const periods = Object.keys(database);
+        let currentPage = 1;
+        const itemsPerPage = 5;
+
+        // 显示玩法介绍
+        function showPlayMethod() {
+            document.getElementById('play-method-modal').classList.remove('hidden');
+        }
+
+        // 关闭玩法介绍
+        function closePlayMethod() {
+            document.getElementById('play-method-modal').classList.add('hidden');
+        }
+
+        // 显示关于和声明
+        function showAbout() {
+            document.getElementById('about-modal').classList.remove('hidden');
+        }
+
+        // 关闭关于和声明
+        function closeAbout() {
+            document.getElementById('about-modal').classList.add('hidden');
+        }
+
+        // 显示所有期
+        function showAllPeriods() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('detail').classList.add('hidden');
+            document.getElementById('all-periods').classList.remove('hidden');
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const currentPeriods = periods.slice(startIndex, endIndex);
+
+            const periodList = document.createElement('div');
+            currentPeriods.forEach(period => {
+                const periodDiv = document.createElement('div');
+                periodDiv.classList.add('bg-white', 'p-6', 'rounded', 'shadow-md', 'mb-4', 'hover-scale', 'cursor-pointer');
+                periodDiv.textContent = database[period].title;
+                periodDiv.onclick = () => showDetail(period);
+                periodList.appendChild(periodDiv);
+            });
+
+            const allPeriodsContainer = document.getElementById('all-periods');
+            allPeriodsContainer.innerHTML = '';
+            allPeriodsContainer.appendChild(periodList);
+
+            const pagination = document.createElement('div');
+            pagination.classList.add('flex', 'justify-between', 'mt-4');
+            const prevButton = document.createElement('button');
+            prevButton.classList.add('bg-gray-300', 'p-2', 'rounded');
+            prevButton.textContent = '上一页';
+            prevButton.onclick = prevPage;
+            const nextButton = document.createElement('button');
+            nextButton.classList.add('bg-gray-300', 'p-2', 'rounded');
+            nextButton.textContent = '下一页';
+            nextButton.onclick = nextPage;
+            pagination.appendChild(prevButton);
+            pagination.appendChild(nextButton);
+            allPeriodsContainer.appendChild(pagination);
+        }
+
+        // 上一页
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showAllPeriods();
+            }
+        }
+
+        // 下一页
+        function nextPage() {
+            const totalPages = Math.ceil(periods.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                showAllPeriods();
+            }
+        }
+
+        // 显示详细页
+        function showDetail(period) {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('all-periods').classList.add('hidden');
+            document.getElementById('detail').classList.remove('hidden');
+
+            const questionContainer = document.getElementById('question-container');
+            questionContainer.innerHTML = `<h2 class="text-2xl font-bold mb-4">${database[period].title}</h2>`;
+
+            database[period].questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('mb-4');
+                questionDiv.innerHTML = `<p class="text-lg font-bold">${index + 1}. ${question.question}</p>`;
+
+                if (question.type === 'fill') {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.id = `question-${index}`;
+                    questionDiv.appendChild(input);
+                } else if (question.type === 'choice') {
+                    question.options.forEach(option => {
+                        const label = document.createElement('label');
+                        label.classList.add('block', 'mb-1');
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = `question-${index}`;
+                        radio.value = option;
+                        label.appendChild(radio);
+                        label.appendChild(document.createTextNode(option));
+                        questionDiv.appendChild(label);
+                    });
+                }
+
+                questionContainer.appendChild(questionDiv);
+            });
+        }
+
+        // 检查答案
+        function checkAnswers() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            resultDiv.classList.remove('hidden');
+
+            const currentPeriod = Object.keys(database)[0];
+            database[currentPeriod].questions.forEach((question, index) => {
+                let userAnswer;
+                if (question.type === 'fill') {
+                    userAnswer = document.getElementById(`question-${index}`).value;
+                } else if (question.type === 'choice') {
+                    const radios = document.querySelectorAll(`input[name="question-${index}"]`);
+                    radios.forEach(radio => {
+                        if (radio.checked) {
+                            userAnswer = radio.value;
+                        }
+                    });
+                }
+
+                const isCorrect = userAnswer === question.answer;
+                const resultText = isCorrect ? '答对了' : '答错了';
+                const resultP = document.createElement('p');
+                resultP.textContent = `${index + 1}. ${resultText}`;
+                resultDiv.appendChild(resultP);
+            });
+        }
+
+        // 搜索期
+        function searchPeriods() {
+            const searchInput = document.getElementById('search-input').value.toLowerCase();
+            const filteredPeriods = periods.filter(period => {
+                const title = database[period].title.toLowerCase();
+                return title.includes(searchInput);
+            });
+
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('detail').classList.add('hidden');
+            document.getElementById('all-periods').classList.remove('hidden');
+
+            const periodList = document.createElement('div');
+            filteredPeriods.forEach(period => {
+                const periodDiv = document.createElement('div');
+                periodDiv.classList.add('bg-white', 'p-6', 'rounded', 'shadow-md', 'mb-4', 'hover-scale', 'cursor-pointer');
+                periodDiv.textContent = database[period].title;
+                periodDiv.onclick = () => showDetail(period);
+                periodList.appendChild(periodDiv);
+            });
+
+            const allPeriodsContainer = document.getElementById('all-periods');
+            allPeriodsContainer.innerHTML = '';
+            allPeriodsContainer.appendChild(periodList);
+
+            const pagination = document.createElement('div');
+            pagination.classList.add('flex', 'justify-between', 'mt-4');
+            const prevButton = document.createElement('button');
+            prevButton.classList.add('bg-gray-300', 'p-2', 'rounded');
+            prevButton.textContent = '上一页';
+            prevButton.onclick = prevPage;
+            const nextButton = document.createElement('button');
+            nextButton.classList.add('bg-gray-300', 'p-2', 'rounded');
+            nextButton.textContent = '下一页';
+            nextButton.onclick = nextPage;
+            pagination.appendChild(prevButton);
+            pagination.appendChild(nextButton);
+            allPeriodsContainer.appendChild(pagination);
+        }
+
+        // 初始化首页显示最新3期
+        function initHome() {
+            const latestPeriods = periods.slice(0, 3);
+            const latestPeriodsContainer = document.getElementById('latest-periods');
+            latestPeriods.forEach(period => {
+                const periodDiv = document.createElement('div');
+                periodDiv.classList.add('bg-white', 'p-6', 'rounded', 'shadow-md', 'hover-scale', 'cursor-pointer');
+                periodDiv.innerHTML = `<h2 class="text-2xl font-bold mb-2">${database[period].title}</h2><p class="text-gray-600">${database[period].description}</p>`;
+                periodDiv.onclick = () => showDetail(period);
+                latestPeriodsContainer.appendChild(periodDiv);
+            });
+        }
+
+        // 页面加载时初始化首页
+        window.onload = initHome;
+    </script>
 </body>
-</html>  
+
+</html>    
