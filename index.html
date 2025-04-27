@@ -146,7 +146,7 @@
     <div id="play-method-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden justify-center items-center">
         <div class="bg-white p-8 rounded shadow-md">
             <h2 class="text-2xl font-bold mb-4">玩法介绍</h2>
-            <p>每一期有最多5道推理题，包含填空和选择题。你需要在输入框或选项中选择你的答案，然后点击提交答案，系统会显示你答对和答错的题目。部分期需要输入提取码才能查看题目。</p>
+            <p>感谢使用推理题，每一期都有我们精心准备的题目，您选择完答案后点击提交，会自动生成报告。部分题目是为个别人准备的，所以需要提取码才能观看，请谅解～祝您玩的愉快！</p>
             <button class="bg-gray-300 p-2 rounded mt-4" onclick="closePlayMethod()">关闭</button>
         </div>
     </div>
@@ -155,7 +155,7 @@
     <div id="about-modal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden justify-center items-center">
         <div class="bg-white p-8 rounded shadow-md">
             <h2 class="text-2xl font-bold mb-4">关于和声明</h2>
-            <p>本网站的推理题仅供娱乐，版权归开发者所有。</p>
+            <p>本网站的推理题仅供娱乐，无其他不良引导，如有巧合，纯属雷同。</p>
             <button class="bg-gray-300 p-2 rounded mt-4" onclick="closeAbout()">关闭</button>
         </div>
     </div>
@@ -183,82 +183,69 @@
         // 模拟数据库数据，增加了解析字段和密码相关字段（按期）
         const database = {
             "1": {
-                "title": "第1期",
-                "description": "这是第1期推理题的简介，快来挑战吧！",
+                "title": "第4期",
+                "description": "简单推理题目-快来挑战",
                 "questions": [
                     {
-                        "type": "fill",
-                        "question": "1 + 1 = __",
-                        "answer": "2",
-                        "explanation": "1加1的和是2，这是基本的数学运算。"
+                        "type": "choice",
+                        "question": "富翁陈先生在别墅遇害，现场有半杯未喝完的咖啡，法医鉴定死亡时间为下午 3 点，咖啡中含剧毒。当天拜访过的人有：A（秘书）：1 点送文件后离开，曾为陈先生冲咖啡。B（客户）：2 点半会谈，中途去洗手间 5 分钟。C（园丁）：下午修剪草坪，3 点后在花园浇水。问题：谁最可能是凶手？",
+                        "options": ["秘书", "客户", "园丁"],
+                        "answer": "秘书",
+                        
+                        "explanation": "咖啡未喝完且含毒，说明毒是在陈先生喝咖啡前放入的。秘书 1 点冲咖啡，若当时下毒，陈先生不会等到 3 点才毒发。但秘书可能在离开前将毒放入咖啡壶，陈先生后续饮用时中毒。客户中途离开时间短，园丁 3 点后在花园，无机会接触咖啡。"
                     },
                     {
                         "type": "choice",
-                        "question": "以下哪个是水果？",
-                        "options": ["苹果", "汽车", "桌子"],
-                        "answer": "苹果",
-                        "explanation": "苹果是水果，而汽车和桌子分别属于交通工具和家具类别。"
+                        "question": "话剧演员张小姐在后台被杀，手中紧握一张撕成两半的扑克牌「方块 J」。嫌疑人有：A（导演）：曾因剧本争吵，方块 J 是导演英文名 “Jack” 的缩写。B（对手演员）：饰演皇后，与张小姐有竞争关系。C（化妆师）：案发时在为其他演员补妆。问题：凶手是谁？",
+                        "options": ["导演", "对手演员", "化妆师"],
+                        "answer": "导演",
+                        "explanation": "方块 J 中的 J 是 “Jack”，但撕成两半暗示 “皇后”（Queen），因皇后的扑克牌是 Q，对应对手演员的角色。"
                     }
                 ],
                 "needPassword": false
             },
             "2": {
-                "title": "第2期",
-                "description": "这是第2期推理题的简介，快来挑战吧！",
+                "title": "第3期",
+                "description": "这是一个私人对话，需要输入验证码～",
                 "questions": [
-                    {
-                        "type": "fill",
-                        "question": "2 + 2 = __",
-                        "answer": "4",
-                        "explanation": "2加2的和是4，属于简单的加法运算。"
-                    },
+                    
                     {
                         "type": "choice",
-                        "question": "以下哪个是动物？",
-                        "options": ["猫", "椅子", "杯子"],
-                        "answer": "猫",
-                        "explanation": "猫是动物，椅子和杯子是生活用品。"
+                        "question": "HI：23，很高兴遇到你。你觉得我的网站怎么样？很不错吧！   （因为我为了能使用github pages，选择了Public，也就是公开的，所以我只能讲这么多。）下期再见！ 问题：你会记得我吗（以后）",
+                        "options": ["会", "不会", "不确定"],
+                        "answer": "会",
+                        "explanation": "-本题没有解析-"
                     }
                 ],
                 "needPassword": true,
-                "password": "123456"
+                "password": "232323"
             },
             "3": {
-                "title": "第3期",
-                "description": "这是第3期推理题的简介，快来挑战吧！",
+                "title": "第2期-网站测试",
+                "description": "第2期---测试",
                 "questions": [
-                    {
-                        "type": "fill",
-                        "question": "3 + 3 = __",
-                        "answer": "6",
-                        "explanation": "3加3等于6，是基础的数学加法。"
-                    },
+                    
                     {
                         "type": "choice",
-                        "question": "以下哪个是交通工具？",
-                        "options": ["自行车", "书本", "电视"],
-                        "answer": "自行车",
-                        "explanation": "自行车是常见的交通工具，书本用于阅读，电视是家电。"
+                        "question": "测试题目-",
+                        "options": ["选我", "选隔壁"],
+                        "answer": "选我",
+                        "explanation": "————本题没有解析"
                     }
                 ],
                 "needPassword": false
             },
             "4": {
-                "title": "第4期",
+                "title": "第1期-测试网站",
                 "description": "这是第4期推理题的简介，快来挑战吧！",
                 "questions": [
-                    {
-                        "type": "fill",
-                        "question": "4 + 4 = __",
-                        "answer": "8",
-                        "explanation": "4加4的结果是8，属于简单加法运算。"
-                    },
+                    
                     {
                         "type": "choice",
-                        "question": "以下哪个是蔬菜？",
-                        "options": ["胡萝卜", "手机", "鞋子"],
-                        "answer": "胡萝卜",
-                        "explanation": "胡萝卜是蔬菜，手机和鞋子分别是电子产品和服饰用品。"
+                        "question": "---",
+                        "options": ["-", "--", "---"],
+                        "answer": "-",
+                        "explanation": "-----"
                     }
                 ],
                 "needPassword": false
