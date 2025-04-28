@@ -14,24 +14,24 @@
         }
 
         /* 悬停动画效果 */
-        .hover-scale:hover {
+       .hover-scale:hover {
             transform: scale(1.05);
             transition: transform 0.3s ease;
         }
 
         /* 答对和答错结果样式 */
-        .correct-answer {
+       .correct-answer {
             color: green;
             font-weight: bold;
         }
 
-        .wrong-answer {
+       .wrong-answer {
             color: red;
             font-weight: bold;
         }
 
         /* 结果弹窗样式 */
-        .result-modal {
+       .result-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -43,7 +43,7 @@
             align-items: center;
         }
 
-        .result-modal-content {
+       .result-modal-content {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
@@ -53,7 +53,7 @@
         }
 
         /* 五彩商标样式 */
-        .rainbow-text {
+       .rainbow-text {
             background-image: linear-gradient(to right, red, orange, yellow, green, blue);
             -webkit-background-clip: text;
             background-clip: text;
@@ -63,7 +63,7 @@
         }
 
         /* 密码输入弹窗样式 */
-        .password-modal {
+       .password-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -75,7 +75,7 @@
             align-items: center;
         }
 
-        .password-modal-content {
+       .password-modal-content {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
@@ -101,18 +101,21 @@
             <!-- 期内容将通过 JavaScript 动态添加 -->
         </div>
 
-        <!-- 玩法介绍和关于声明 -->
-        <div class="grid grid-cols-2 gap-4 mt-8">
+        <!-- 玩法介绍、关于声明、联系我们 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
             <div class="bg-white p-6 rounded shadow-md hover-scale cursor-pointer" onclick="showPlayMethod()">
                 <h3 class="text-lg font-bold">玩法介绍</h3>
             </div>
             <div class="bg-white p-6 rounded shadow-md hover-scale cursor-pointer" onclick="showAbout()">
                 <h3 class="text-lg font-bold">关于和声明</h3>
             </div>
+            <div class="bg-white p-6 rounded shadow-md hover-scale cursor-pointer" onclick="showContactPage()">
+                <h3 class="text-lg font-bold">联系我们</h3>
+            </div>
         </div>
 
         <!-- 显示所有期按钮 -->
-        <button class="bg-blue-500 text-white p-2 rounded mt-8" onclick="showAllPeriods()">显示所有期</button>
+        <button class="bg-blue-500 text-white p-6 rounded mt-8 hover-scale cursor-pointer" onclick="showAllPeriods()">显示所有期</button>
     </div>
 
     <!-- 详细页内容 -->
@@ -160,6 +163,19 @@
         </div>
     </div>
 
+    <!-- 联系我们页面 -->
+    <div id="contact-page" class="p-8 hidden">
+        <h2 class="text-2xl font-bold mb-4">联系我们</h2>
+        <p>如果您有任何问题、建议或反馈，请通过以下表单与我们联系。我们会尽快回复您！</p>
+        <form id="contact-form" action="https://formspree.io/f/mnndnele" method="post" class="mt-4">
+            <input type="text" name="name" placeholder="你的姓名" required class="border border-gray-300 rounded p-2 mb-2 w-full"><br>
+            <input type="email" name="email" placeholder="你的邮箱" required class="border border-gray-300 rounded p-2 mb-2 w-full"><br>
+            <textarea name="message" placeholder="你的留言" required class="border border-gray-300 rounded p-2 mb-2 w-full h-32"></textarea><br>
+            <input type="submit" value="发送" class="bg-blue-500 text-white p-2 rounded">
+        </form>
+        <button class="bg-gray-300 text-white p-2 rounded mt-4" onclick="goHome()">返回首页</button>
+    </div>
+
     <!-- 结果弹窗 -->
     <div id="result-modal" class="result-modal">
         <div class="result-modal-content">
@@ -191,7 +207,6 @@
                         "question": "富翁陈先生在别墅遇害，现场有半杯未喝完的咖啡，法医鉴定死亡时间为下午 3 点，咖啡中含剧毒。当天拜访过的人有：A（秘书）：1 点送文件后离开，曾为陈先生冲咖啡。B（客户）：2 点半会谈，中途去洗手间 5 分钟。C（园丁）：下午修剪草坪，3 点后在花园浇水。问题：谁最可能是凶手？",
                         "options": ["秘书", "客户", "园丁"],
                         "answer": "秘书",
-                        
                         "explanation": "咖啡未喝完且含毒，说明毒是在陈先生喝咖啡前放入的。秘书 1 点冲咖啡，若当时下毒，陈先生不会等到 3 点才毒发。但秘书可能在离开前将毒放入咖啡壶，陈先生后续饮用时中毒。客户中途离开时间短，园丁 3 点后在花园，无机会接触咖啡。"
                     },
                     {
@@ -208,7 +223,6 @@
                 "title": "第3期",
                 "description": "这是一个私人对话，需要输入验证码～",
                 "questions": [
-                    
                     {
                         "type": "choice",
                         "question": "HI：23，很高兴遇到你。你觉得我的网站怎么样？很不错吧！   （因为我为了能使用github pages，选择了Public，也就是公开的，所以我只能讲这么多。）下期再见！ 问题：你会记得我吗（以后）",
@@ -224,7 +238,6 @@
                 "title": "第2期-网站测试",
                 "description": "第2期---测试",
                 "questions": [
-                    
                     {
                         "type": "choice",
                         "question": "测试题目-",
@@ -239,7 +252,6 @@
                 "title": "第1期-测试网站",
                 "description": "这是第4期推理题的简介，快来挑战吧！",
                 "questions": [
-                    
                     {
                         "type": "choice",
                         "question": "---",
@@ -584,9 +596,20 @@
             document.getElementById('home').classList.remove('hidden');
             document.getElementById('detail').classList.add('hidden');
             document.getElementById('all-periods').classList.add('hidden');
+            document.getElementById('contact-page').classList.add('hidden');
         }
 
-        // 初始化首页显示最新3期
+        // 显示联系我们页面
+        function showContactPage() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('detail').classList.add('hidden');
+            document.getElementById('all-periods').classList.add('hidden');
+            document.getElementById('contact-page').classList.remove('hidden');
+        }
+
+        // 页面加载时初始化首页
+        window.onload = initHome;
+
         function initHome() {
             const latestPeriods = periods.slice(0, 3);
             const latestPeriodsContainer = document.getElementById('latest-periods');
@@ -610,9 +633,6 @@
                 latestPeriodsContainer.appendChild(periodDiv);
             });
         }
-
-        // 页面加载时初始化首页
-        window.onload = initHome;
     </script>
 </body>
 
