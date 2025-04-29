@@ -428,6 +428,10 @@
                         const input = document.createElement('input');
                         input.type = 'text';
                         input.id = `question-${index}`;
+                        // 添加输入框样式
+                        input.style.border = '1px solid #ccc';
+                        input.style.padding = '5px';
+                        input.style.marginTop = '5px';
                         questionDiv.appendChild(input);
                     } else if (question.type === 'choice') {
                         question.options.forEach(option => {
@@ -619,6 +623,10 @@
                         const input = document.createElement('input');
                         input.type = 'text';
                         input.id = `question-${index}`;
+                        // 添加输入框样式
+                        input.style.border = '1px solid #ccc';
+                        input.style.padding = '5px';
+                        input.style.marginTop = '5px';
                         questionDiv.appendChild(input);
                     } else if (question.type === 'choice') {
                         question.options.forEach(option => {
