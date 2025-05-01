@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信风格聊天应用</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 登录/注册模态框 -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalTitle">登录</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="authTabs">
+                        <ul class="nav nav-tabs" id="authTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">登录</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">注册</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content p-3" id="authTabContent">
+                            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                <div class="mb-3">
+                                    <label for="loginEmail" class="form-label">邮箱</label>
+                                    <input type="email" class="form-control" id="loginEmail">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="loginPassword" class="form-label">密码</label>
+                                    <input type="password" class="form-control" id="loginPassword">
+                                </div>
+                                <button class="btn btn-primary w-100" onclick="login()">登录</button>
+                            </div>
+                            <div class="tab-pane fade" id="register" role="tabpanel">
+                                <div class="mb-3">
+                                    <label for="registerName" class="form-label">昵称</label>
+                                    <input type="text" class="form-control" id="registerName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerEmail" class="form-label">邮箱</label>
+                                    <input type="email" class="form-control" id="registerEmail">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerPassword" class="form-label">密码</label>
+                                    <input type="password" class="form-control" id="registerPassword">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="registerBio" class="form-label">个人简介</label>
+                                    <textarea class="form-control" id="registerBio" rows="3"></textarea>
+                                </div>
+                                <button class="btn btn-success w-100" onclick="register()">注册</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主界面 (登录后显示) -->
+    <div class="container-fluid d-none" id="mainApp">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="col-md-3 col-lg-2 d-md-flex bg-light flex-column p-0 sidebar">
+                <div class="d-flex flex-column h-100">
+                    <!-- 用户信息 -->
+                    <div class="p-3 border-bottom d-flex align-items-center user-info">
+                        <img src="images/default-avatar.jpg" class="rounded-circle me-2 avatar" id="sidebarAvatar">
+                        <span id="sidebarUsername">用户名</span>
+                    </div>
+                    
+                    <!-- 导航菜单 -->
+                    <div class="nav flex-column nav-pills p-2" id="sidebarMenu">
+                        <button class="nav-link active" onclick="showView('friends')">
+                            <i class="fas fa-user-friends me-2"></i>好友
+                        </button>
+                        <button class="nav-link" onclick="showView('chatRooms')">
+                            <i class="fas fa-comments me-2"></i>聊天室
+                        </button>
+                        <button class="nav-link" onclick="showView('friendRequests')">
+                            <i class="fas fa-user-plus me-2"></i>好友验证
+                        </button>
+                        <button class="nav-link" onclick="showView('profile')">
+                            <i class="fas fa-user me-2"></i>个人中心
+                        </button>
+                        <button class="nav-link" onclick="logout()">
+                            <i class="fas fa-sign-out-alt me-2"></i>退出登录
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="col-md-9 col-lg-10 ms-sm-auto px-0 main-content">
+                <!-- 好友列表视图 -->
+                <div class="view" id="friendsView">
+                    <div class="d-flex justify-content-between p-3 border-bottom">
+                        <h5>好友列表</h5>
+                        <button class="btn btn-sm btn-outline-primary" onclick="showAddFriendModal()">
+                            <i class="fas fa-plus"></i> 添加好友
+                        </button>
+                    </div>
+                    <div class="list-group list-group-flush" id="friendsList">
+                        <!-- 好友列表将通过JS动态加载 -->
+                    </div>
+                </div>
+                
+                <!-- 聊天室列表视图 -->
+                <div class="view d-none" id="chatRoomsView">
+                    <div class="d-flex justify-content-between p-3 border-bottom">
+                        <h5>聊天室</h5>
+                        <button class="btn btn-sm btn-outline-success" onclick="showCreateRoomModal()">
+                            <i class="fas fa-plus"></i> 创建聊天室
+                        </button>
+                    </div>
+                    <div class="list-group list-group-flush" id="chatRoomsList">
+                        <!-- 聊天室列表将通过JS动态加载 -->
+                    </div>
+                </div>
+                
+                <!-- 好友验证视图 -->
+                <div class="view d-none" id="friendRequestsView">
+                    <div class="p-3 border-bottom">
+                        <h5>好友验证</h5>
+                    </div>
+                    <div class="p-3">
+                        <h6>收到的好友请求</h6>
+                        <div class="list-group mb-3" id="receivedRequestsList">
+                            <!-- 收到的好友请求将通过JS动态加载 -->
+                        </div>
+                        
+                        <h6>发送的好友请求</h6>
+                        <div class="list-group" id="sentRequestsList">
+                            <!-- 发送的好友请求将通过JS动态加载 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 个人中心视图 -->
+                <div class="view d-none" id="profileView">
+                    <div class="p-3 border-bottom">
+                        <h5>个人中心</h5>
+                    </div>
+                    <div class="p-3">
+                        <div class="text-center mb-3">
+                            <img src="images/default-avatar.jpg" class="rounded-circle avatar-lg mb-2" id="profileAvatar">
+                            <button class="btn btn-sm btn-outline-secondary d-block mx-auto" onclick="document.getElementById('avatarUpload').click()">
+                                更换头像
+                            </button>
+                            <input type="file" id="avatarUpload" accept="image/*" class="d-none">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="profileName" class="form-label">昵称</label>
+                            <input type="text" class="form-control" id="profileName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileBio" class="form-label">个人简介</label>
+                            <textarea class="form-control" id="profileBio" rows="3"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="updateProfile()">保存更改</button>
+                    </div>
+                </div>
+                
+                <!-- 聊天视图 -->
+                <div class="view d-none" id="chatView">
+                    <div class="d-flex align-items-center p-3 border-bottom chat-header">
+                        <button class="btn btn-sm btn-outline-secondary me-2 back-button" onclick="backToPreviousView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <img src="images/default-avatar.jpg" class="rounded-circle me-2 avatar-sm" id="chatAvatar">
+                        <div>
+                            <h6 class="mb-0" id="chatTitle">聊天标题</h6>
+                            <small class="text-muted" id="chatStatus">在线</small>
+                        </div>
+                        <div class="ms-auto" id="chatActions">
+                            <!-- 聊天操作按钮将通过JS动态加载 -->
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages p-3" id="chatMessages">
+                        <!-- 聊天消息将通过JS动态加载 -->
+                    </div>
+                    
+                    <div class="p-3 border-top chat-input">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="messageInput" placeholder="输入消息...">
+                            <button class="btn btn-primary" id="sendButton" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 用户资料视图 -->
+                <div class="view d-none" id="userProfileView">
+                    <div class="p-3 border-bottom">
+                        <button class="btn btn-sm btn-outline-secondary me-2 back-button" onclick="backToPreviousView()">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <span class="h5">用户资料</span>
+                    </div>
+                    <div class="p-3">
+                        <div class="text-center mb-3">
+                            <img src="images/default-avatar.jpg" class="rounded-circle avatar-lg mb-2" id="viewedUserAvatar">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">昵称</label>
+                            <p class="form-control-static" id="viewedUserName"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">个人简介</label>
+                            <p class="form-control-static" id="viewedUserBio"></p>
+                        </div>
+                        
+                        <div class="d-grid gap-2" id="userProfileActions">
+                            <!-- 操作按钮将通过JS动态加载 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加好友模态框 -->
+    <div class="modal fade" id="addFriendModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">添加好友</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="searchUser" class="form-label">搜索用户</label>
+                        <input type="text" class="form-control" id="searchUser" placeholder="输入用户名或邮箱">
+                    </div>
+                    <div class="list-group" id="searchResults">
+                        <!-- 搜索结果将通过JS动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建聊天室模态框 -->
+    <div class="modal fade" id="createRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">创建聊天室</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="roomName" class="form-label">聊天室名称</label>
+                        <input type="text" class="form-control" id="roomName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">添加成员</label>
+                        <div class="list-group" id="friendsToInvite">
+                            <!-- 好友列表将通过JS动态加载 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="createChatRoom()">创建</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
