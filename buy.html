@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快推短视频 - 套餐订购</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366F1',
+                        secondary: '#8B5CF6',
+                        danger: '#EF4444',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            }
+            .input-focus {
+                @apply focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+            }
+            .btn-secondary {
+                @apply bg-white border border-primary text-primary hover:bg-primary/5 font-medium py-2 px-4 rounded-lg transition-all duration-300;
+            }
+            .btn-danger {
+                @apply bg-danger hover:bg-danger/90 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300;
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+            }
+            .nav-active {
+                @apply border-b-2 border-primary text-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 font-inter">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 text-primary">
+                        <i class="fa fa-play-circle text-2xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h1 class="text-xl font-semibold text-dark">快推短视频</h1>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="user.html" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">首页</a>
+                        <a href="vedio.html" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">视频交接</a>
+                        <a href="buy.html" class="nav-active px-3 py-2 text-sm">续订/订购</a>
+                        <a href="#" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">帮助</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center">
+                    <button id="userMenuBtn" class="flex items-center">
+                        <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                            <i class="fa fa-user text-gray-500"></i>
+                        </div>
+                        <span class="ml-2 text-sm font-medium text-gray-700" id="currentUsername">用户名</span>
+                        <i class="fa fa-angle-down ml-1 text-gray-500"></i>
+                    </button>
+                    
+                    <div id="userMenu" class="hidden absolute right-4 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                        <a href="#" id="profileLink" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fa fa-user-circle mr-2"></i>个人中心
+                        </a>
+                        <a href="#" id="messageLink" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <i class="fa fa-comments mr-2"></i>联系管理员
+                        </a>
+                        <div class="border-t border-gray-100 my-1"></div>
+                        <a href="#" id="logoutLink" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                            <i class="fa fa-sign-out mr-2"></i>退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobileMenuBtn" class="text-gray-500 hover:text-primary">
+                        <i class="fa fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动端菜单 -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="user.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">首页</a>
+                <a href="vedio.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">视频交接</a>
+                <a href="buy.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-primary/10">续订/订购</a>
+                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">帮助</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- 欢迎信息 -->
+        <div class="mb-10">
+            <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold gradient-bg bg-clip-text text-transparent mb-4">套餐订购</h1>
+            
+            <!-- 用户信息卡片 -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-10">
+                <div class="p-6">
+                    <div class="flex flex-col md:flex-row items-start md:items-center">
+                        <div class="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center mb-4 md:mb-0">
+                            <i class="fa fa-user text-gray-500 text-2xl"></i>
+                        </div>
+                        <div class="ml-0 md:ml-6">
+                            <h3 class="text-xl font-semibold text-dark" id="displayUsername">用户名</h3>
+                            <div class="flex flex-wrap items-center mt-2">
+                                <span class="text-sm text-gray-500 mr-4">当前套餐: <span id="currentPackage" class="text-primary font-medium">无</span></span>
+                                <span class="text-sm text-gray-500 mr-4">剩余视频: <span id="remainingVideos" class="text-primary font-medium">0</span></span>
+                                <span class="text-sm text-gray-500">推推点数: <span id="userPoints" class="text-primary font-medium">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 套餐列表 -->
+            <h2 class="text-xl font-semibold text-dark mb-6">套餐列表</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <!-- 基础套餐 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-semibold text-dark">基础套餐</h3>
+                            <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">热门</span>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">每月5个精选视频</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">基础剪辑技巧教学</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">视频下载权限</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-times text-gray-400 mr-2"></i>
+                                <span class="text-sm text-gray-400">高级调色教程</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-times text-gray-400 mr-2"></i>
+                                <span class="text-sm text-gray-400">一对一指导</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <div class="flex items-end">
+                                <span class="text-3xl font-bold text-dark">50</span>
+                                <span class="text-sm text-gray-500 ml-1 mb-1">推推点数/月</span>
+                            </div>
+                            
+                            <button onclick="subscribePackage('基础套餐', 50)" class="mt-4 w-full btn-primary">
+                                立即订购
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 专业套餐 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border-2 border-primary relative">
+                    <div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1">
+                        推荐
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-semibold text-dark">专业套餐</h3>
+                            <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">性价比高</span>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">每月10个专业视频</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">高级剪辑技巧教学</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">视频下载权限</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">高级调色教程</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-times text-gray-400 mr-2"></i>
+                                <span class="text-sm text-gray-400">一对一指导</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <div class="flex items-end">
+                                <span class="text-3xl font-bold text-dark">100</span>
+                                <span class="text-sm text-gray-500 ml-1 mb-1">推推点数/月</span>
+                            </div>
+                            
+                            <button onclick="subscribePackage('专业套餐', 100)" class="mt-4 w-full btn-primary">
+                                立即订购
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 高级套餐 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-semibold text-dark">高级套餐</h3>
+                            <span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">专业版</span>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">每月15个高级视频</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">顶级剪辑技巧教学</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">无限制视频下载</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">高级调色与特效教程</span>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <i class="fa fa-check text-green-500 mr-2"></i>
+                                <span class="text-sm text-gray-700">每月2次一对一指导</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <div class="flex items-end">
+                                <span class="text-3xl font-bold text-dark">150</span>
+                                <span class="text-sm text-gray-500 ml-1 mb-1">推推点数/月</span>
+                            </div>
+                            
+                            <button onclick="subscribePackage('高级套餐', 150)" class="mt-4 w-full btn-primary">
+                                立即订购
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 其他服务 -->
+            <h2 class="text-xl font-semibold text-dark mb-6">增值服务</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <!-- 单个视频购买 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                <i class="fa fa-film text-primary text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-dark">单个视频购买</h3>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 mb-4">
+                            如果您只对某个视频感兴趣，可以单独购买。每个视频的价格根据内容难度和时长不同而有所差异。
+                        </p>
+                        
+                        <button onclick="viewSingleVideos()" class="btn-secondary">
+                            查看可购买视频
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 定制服务 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                                <i class="fa fa-cogs text-primary text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-dark">定制服务</h3>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 mb-4">
+                            我们提供个性化的视频制作和剪辑教学服务，根据您的需求量身定制。价格根据具体需求评估。
+                        </p>
+                        
+                        <button onclick="requestCustomService()" class="btn-secondary">
+                            申请定制服务
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-10 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快推短视频</h3>
+                    <p class="text-gray-400 text-sm">
+                        提供高质量短视频教程和素材，帮助你快速提升短视频制作水平。
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快速链接</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="user.html" class="hover:text-white transition-colors">首页</a></li>
+                        <li><a href="vedio.html" class="hover:text-white transition-colors">视频交接</a></li>
+                        <li><a href="buy.html" class="hover:text-white transition-colors">续订/订购</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">帮助中心</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">联系我们</h3>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope-o mr-2"></i>
+                            <a href="mailto:support@kuaitui.com" class="hover:text-white transition-colors">support@kuaitui.com</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone mr-2"></i>
+                            <span>400-123-4567</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">关注我们</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-primary w-10 h-10 rounded-full flex items-center justify-center transition-colors">
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2025 快推短视频 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前用户信息
+            const username = localStorage.getItem('user');
+            if (username) {
+                document.getElementById('currentUsername').textContent = username;
+                document.getElementById('displayUsername').textContent = username;
+                
+                // 模拟用户数据
+                if (username === 'robin') {
+                    document.getElementById('currentPackage').textContent = '专业套餐';
+                    document.getElementById('remainingVideos').textContent = '7/10';
+                    document.getElementById('userPoints').textContent = '150';
+                } else if (username === 'text') {
+                    document.getElementById('currentPackage').textContent = '基础套餐';
+                    document.getElementById('remainingVideos').textContent = '3/5';
+                    document.getElementById('userPoints').textContent = '80';
+                }
+            }
+            
+            // 用户菜单切换
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userMenu = document.getElementById('userMenu');
+            
+            userMenuBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                userMenu.classList.toggle('hidden');
+            });
+            
+            // 移动端菜单切换
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // 点击其他区域关闭菜单
+            document.addEventListener('click', function(e) {
+                if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                    userMenu.classList.add('hidden');
+                }
+                
+                if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // 退出登录
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            });
+        });
+        
+        // 订购套餐
+        function subscribePackage(packageName, points) {
+            const username = localStorage.getItem('user');
+            const userPoints = parseInt(document.getElementById('userPoints').textContent);
+            
+            if (userPoints >= points) {
+                if (confirm(`确定要订购 ${packageName} 吗？将消耗 ${points} 推推点数。`)) {
+                    // 更新用户点数
+                    const newPoints = userPoints - points;
+                    document.getElementById('userPoints').textContent = newPoints;
+                    
+                    // 更新当前套餐
+                    document.getElementById('currentPackage').textContent = packageName;
+                    
+                    // 根据套餐设置剩余视频数
+                    if (packageName === '基础套餐') {
+                        document.getElementById('remainingVideos').textContent = '5/5';
+                    } else if (packageName === '专业套餐') {
+                        document.getElementById('remainingVideos').textContent = '10/10';
+                    } else if (packageName === '高级套餐') {
+                        document.getElementById('remainingVideos').textContent = '15/15';
+                    }
+                    
+                    // 显示成功提示
+                    alert(`恭喜！您已成功订购 ${packageName}，已消耗 ${points} 推推点数。`);
+                    
+                    // 模拟创建GitHub issue
+                    createIssue(username, `订购套餐: ${packageName}`, 
+                        `用户 ${username} 成功订购 ${packageName}，消耗 ${points} 推推点数。\n当前剩余点数: ${newPoints}`);
+                }
+            } else {
+                alert(`您的推推点数不足，${packageName} 需要 ${points} 点，您当前只有 ${userPoints} 点。请联系管理员增加点数。`);
+            }
+        }
+        
+        // 查看单个视频
+        function viewSingleVideos() {
+            alert('查看可购买的单个视频（这里应该跳转到单个视频购买页面）');
+        }
+        
+        // 申请定制服务
+        function requestCustomService() {
+            const message = prompt('请简要描述您的定制需求:', '');
+            if (message) {
+                alert('您的定制服务申请已提交，管理员将尽快与您联系。');
+                
+                // 模拟创建GitHub issue
+                createIssue(localStorage.getItem('user'), '申请定制服务', message);
+            }
+        }
+        
+        // 模拟创建GitHub issue
+        function createIssue(username, title, body) {
+            console.log(`创建GitHub issue: ${title}`);
+            console.log(`用户: ${username}`);
+            console.log(`内容: ${body}`);
+            
+            // 这里应该是实际调用GitHub API的代码
+            // 为了演示，我们只在控制台输出信息
+        }
+    </script>
+</body>
+</html>
