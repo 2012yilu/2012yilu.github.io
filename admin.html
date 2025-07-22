@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>快推短视频 - 管理页面</title>
+    <title>快推短视频 - 管理后台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -50,6 +50,9 @@
             .nav-active {
                 @apply border-b-2 border-primary text-primary font-medium;
             }
+            .tab-active {
+                @apply bg-primary/10 text-primary font-medium;
+            }
         }
     </style>
 </head>
@@ -60,20 +63,10 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 text-primary">
-                        <i class="fa fa-cog text-2xl"></i>
+                        <i class="fa fa-cogs text-2xl"></i>
                     </div>
                     <div class="ml-3">
                         <h1 class="text-xl font-semibold text-dark">快推短视频 - 管理后台</h1>
-                    </div>
-                </div>
-                
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-center space-x-4">
-                        <a href="admin.html" class="nav-active px-3 py-2 text-sm">首页</a>
-                        <a href="#" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">视频管理</a>
-                        <a href="#" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">套餐管理</a>
-                        <a href="#" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">用户管理</a>
-                        <a href="#" class="border-transparent hover:border-primary/30 hover:text-primary px-3 py-2 text-sm transition-colors">消息管理</a>
                     </div>
                 </div>
                 
@@ -82,7 +75,7 @@
                         <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
                             <i class="fa fa-user text-gray-500"></i>
                         </div>
-                        <span class="ml-2 text-sm font-medium text-gray-700">管理员</span>
+                        <span class="ml-2 text-sm font-medium text-gray-700" id="currentUsername">管理员</span>
                         <i class="fa fa-angle-down ml-1 text-gray-500"></i>
                     </button>
                     
@@ -92,23 +85,6 @@
                         </a>
                     </div>
                 </div>
-                
-                <div class="md:hidden">
-                    <button id="mobileMenuBtn" class="text-gray-500 hover:text-primary">
-                        <i class="fa fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 移动端菜单 -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="admin.html" class="block px-3 py-2 rounded-md text-base font-medium text-primary bg-primary/10">首页</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">视频管理</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">套餐管理</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">用户管理</a>
-                <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">消息管理</a>
             </div>
         </div>
     </header>
@@ -118,48 +94,18 @@
         <div class="mb-10">
             <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold gradient-bg bg-clip-text text-transparent mb-4">管理中心</h1>
             
-            <!-- 数据概览 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                            <i class="fa fa-users text-primary text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-gray-500 text-sm">注册用户</p>
-                            <p class="text-2xl font-semibold text-dark">2</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                            <i class="fa fa-film text-primary text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-gray-500 text-sm">视频总数</p>
-                            <p class="text-2xl font-semibold text-dark">25</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-xl shadow-md p-6 card-hover">
-                    <div class="flex items-center">
-                        <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                            <i class="fa fa-comments text-primary text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-gray-500 text-sm">新消息</p>
-                            <p class="text-2xl font-semibold text-dark">3</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 用户管理 -->
+            <!-- 管理选项卡 -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden mb-10">
-                <div class="p-6">
+                <div class="flex border-b">
+                    <button id="tab1" onclick="switchTab(1)" class="tab-active px-6 py-3 text-sm">用户管理</button>
+                    <button id="tab2" onclick="switchTab(2)" class="px-6 py-3 text-sm">视频管理</button>
+                    <button id="tab3" onclick="switchTab(3)" class="px-6 py-3 text-sm">套餐管理</button>
+                    <button id="tab4" onclick="switchTab(4)" class="px-6 py-3 text-sm">消息管理</button>
+                    <button id="tab5" onclick="switchTab(5)" class="px-6 py-3 text-sm">点数管理</button>
+                </div>
+                
+                <!-- 用户管理内容 -->
+                <div id="tab1Content" class="p-6">
                     <h2 class="text-xl font-semibold text-dark mb-6">用户管理</h2>
                     
                     <div class="overflow-x-auto">
@@ -192,11 +138,11 @@
                                         7/10
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <span id="robinPoints">150</span>
+                                        150
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="openPointsModal('robin')" class="text-primary hover:text-primary/80 mr-3">管理点数</button>
-                                        <button onclick="viewUserDetails('robin')" class="text-gray-600 hover:text-gray-900">查看详情</button>
+                                        <button onclick="viewUserDetails('robin')" class="text-primary hover:text-primary/80 mr-3">查看详情</button>
+                                        <button onclick="openPointsModal('robin', 150)" class="text-green-600 hover:text-green-800">调整点数</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -217,57 +163,305 @@
                                         3/5
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <span id="textPoints">80</span>
+                                        80
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="openPointsModal('text')" class="text-primary hover:text-primary/80 mr-3">管理点数</button>
-                                        <button onclick="viewUserDetails('text')" class="text-gray-600 hover:text-gray-900">查看详情</button>
+                                        <button onclick="viewUserDetails('text')" class="text-primary hover:text-primary/80 mr-3">查看详情</button>
+                                        <button onclick="openPointsModal('text', 80)" class="text-green-600 hover:text-green-800">调整点数</button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 最新消息 -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-10">
-                <div class="p-6">
-                    <h2 class="text-xl font-semibold text-dark mb-6">最新消息</h2>
+                
+                <!-- 视频管理内容 -->
+                <div id="tab2Content" class="p-6 hidden">
+                    <h2 class="text-xl font-semibold text-dark mb-6">视频管理</h2>
                     
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-primary pl-4 py-2">
-                            <div class="flex justify-between items-start">
-                                <h3 class="text-sm font-medium text-gray-900">robin</h3>
-                                <p class="text-xs text-gray-500">2025-07-22 10:30</p>
-                            </div>
-                            <p class="mt-1 text-sm text-gray-700">请问什么时候会更新新的高级特效教程？</p>
-                            <div class="mt-3">
-                                <button onclick="replyMessage('robin', 1)" class="text-primary hover:text-primary/80 text-sm">回复</button>
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex space-x-4">
+                            <select id="videoPackageFilter" class="border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                                <option value="all">所有套餐</option>
+                                <option value="基础套餐">基础套餐</option>
+                                <option value="专业套餐">专业套餐</option>
+                                <option value="高级套餐">高级套餐</option>
+                            </select>
+                            <input type="text" id="videoSearch" placeholder="搜索视频..." class="border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                        </div>
+                        <button onclick="addNewVideo()" class="btn-primary">
+                            <i class="fa fa-plus mr-2"></i>添加新视频
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">视频ID</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">所属套餐</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">上传日期</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- 视频数据会通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 套餐管理内容 -->
+                <div id="tab3Content" class="p-6 hidden">
+                    <h2 class="text-xl font-semibold text-dark mb-6">套餐管理</h2>
+                    
+                    <div class="flex justify-between items-center mb-6">
+                        <button onclick="addNewPackage()" class="btn-primary">
+                            <i class="fa fa-plus mr-2"></i>添加新套餐
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- 基础套餐 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border-2 border-gray-200">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-xl font-semibold text-dark">基础套餐</h3>
+                                    <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">热门</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">每月5个精选视频</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">基础剪辑技巧教学</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">视频下载权限</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <div class="flex items-end">
+                                        <span class="text-3xl font-bold text-dark">50</span>
+                                        <span class="text-sm text-gray-500 ml-1 mb-1">推推点数/月</span>
+                                    </div>
+                                    
+                                    <div class="mt-4 flex space-x-3">
+                                        <button onclick="editPackage('基础套餐')" class="flex-1 btn-secondary">
+                                            编辑
+                                        </button>
+                                        <button onclick="deletePackage('基础套餐')" class="flex-1 btn-danger">
+                                            删除
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-primary pl-4 py-2">
-                            <div class="flex justify-between items-start">
-                                <h3 class="text-sm font-medium text-gray-900">text</h3>
-                                <p class="text-xs text-gray-500">2025-07-21 16:45</p>
+                        <!-- 专业套餐 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border-2 border-primary relative">
+                            <div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1">
+                                推荐
                             </div>
-                            <p class="mt-1 text-sm text-gray-700">基础套餐的视频数量能否增加一些？</p>
-                            <div class="mt-3">
-                                <button onclick="replyMessage('text', 2)" class="text-primary hover:text-primary/80 text-sm">回复</button>
+                            
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-xl font-semibold text-dark">专业套餐</h3>
+                                    <span class="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">性价比高</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">每月10个专业视频</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">高级剪辑技巧教学</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">视频下载权限</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">高级调色教程</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <div class="flex items-end">
+                                        <span class="text-3xl font-bold text-dark">100</span>
+                                        <span class="text-sm text-gray-500 ml-1 mb-1">推推点数/月</span>
+                                    </div>
+                                    
+                                    <div class="mt-4 flex space-x-3">
+                                        <button onclick="editPackage('专业套餐')" class="flex-1 btn-secondary">
+                                            编辑
+                                        </button>
+                                        <button onclick="deletePackage('专业套餐')" class="flex-1 btn-danger">
+                                            删除
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="border-l-4 border-primary pl-4 py-2">
-                            <div class="flex justify-between items-start">
-                                <h3 class="text-sm font-medium text-gray-900">robin</h3>
-                                <p class="text-xs text-gray-500">2025-07-20 09:15</p>
-                            </div>
-                            <p class="mt-1 text-sm text-gray-700">专业套餐的视频质量非常高，希望能推出更多类似的内容。</p>
-                            <div class="mt-3">
-                                <button onclick="replyMessage('robin', 3)" class="text-primary hover:text-primary/80 text-sm">回复</button>
+                        <!-- 高级套餐 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover border-2 border-gray-200">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="text-xl font-semibold text-dark">高级套餐</h3>
+                                    <span class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">专业版</span>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">每月15个高级视频</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">顶级剪辑技巧教学</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">无限制视频下载</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">高级调色与特效教程</span>
+                                    </div>
+                                    <div class="flex items-center mb-2">
+                                        <i class="fa fa-check text-green-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700">每月2次一对一指导</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <div class="flex items-end">
+                                        <span class="text-3xl font-bold text-dark">150</span>
+                                        <span class="text-sm text-gray-500 ml-1 mb-1">推推点数/月</span>
+                                    </div>
+                                    
+                                    <div class="mt-4 flex space-x-3">
+                                        <button onclick="editPackage('高级套餐')" class="flex-1 btn-secondary">
+                                            编辑
+                                        </button>
+                                        <button onclick="deletePackage('高级套餐')" class="flex-1 btn-danger">
+                                            删除
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- 消息管理内容 -->
+                <div id="tab4Content" class="p-6 hidden">
+                    <h2 class="text-xl font-semibold text-dark mb-6">消息管理</h2>
+                    
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex space-x-4">
+                            <select id="messageUserFilter" class="border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                                <option value="all">所有用户</option>
+                                <option value="robin">robin</option>
+                                <option value="text">text</option>
+                            </select>
+                            <select id="messageTypeFilter" class="border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                                <option value="all">所有类型</option>
+                                <option value="message">消息</option>
+                                <option value="order">订购请求</option>
+                                <option value="custom">定制服务</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发送者</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标题</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- 消息数据会通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 点数管理内容 -->
+                <div id="tab5Content" class="p-6 hidden">
+                    <h2 class="text-xl font-semibold text-dark mb-6">点数管理</h2>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-10">
+                        <h3 class="text-lg font-semibold text-dark mb-4">添加推推点数记录</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="pointsUsername" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                                <select id="pointsUsername" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                                    <option value="robin">robin</option>
+                                    <option value="text">text</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="pointsAmount" class="block text-sm font-medium text-gray-700 mb-1">点数变动</label>
+                                <div class="flex">
+                                    <button id="decreasePoints" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-l-lg transition-colors">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <input type="number" id="pointsAmount" value="100" min="1" class="w-full border-t border-b border-gray-300 px-3 py-2 input-focus text-center">
+                                    <button id="increasePoints" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-r-lg transition-colors">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <label for="pointsReason" class="block text-sm font-medium text-gray-700 mb-1">变动原因</label>
+                            <textarea id="pointsReason" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus" placeholder="请输入点数变动原因..."></textarea>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end">
+                            <button onclick="savePointsRecord()" class="btn-primary">
+                                保存记录
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-dark mb-4">点数变动记录</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">记录ID</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用户名</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">变动点数</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">变动后点数</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">原因</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- 点数记录数据会通过JavaScript动态生成 -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -291,7 +485,6 @@
                         <li><a href="#" class="hover:text-white transition-colors">视频管理</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">套餐管理</a></li>
                         <li><a href="#" class="hover:text-white transition-colors">用户管理</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">消息管理</a></li>
                     </ul>
                 </div>
                 
@@ -331,39 +524,72 @@
         </div>
     </footer>
 
-    <!-- 点数管理模态框 -->
-    <div id="pointsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 overflow-hidden transform transition-all">
+    <!-- 模态框 -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div class="p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold text-gray-900" id="pointsModalTitle">管理点数</h3>
-                    <button onclick="closePointsModal()" class="text-gray-400 hover:text-gray-500">
-                        <i class="fa fa-times"></i>
+                    <h3 class="text-xl font-semibold text-dark" id="modalTitle">模态框标题</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa fa-times text-xl"></i>
                     </button>
                 </div>
                 
-                <div class="mb-4">
-                    <p class="text-sm text-gray-600">当前用户: <span id="pointsModalUsername" class="font-medium">用户名</span></p>
-                    <p class="text-sm text-gray-600">当前点数: <span id="pointsModalCurrentPoints" class="font-medium">0</span></p>
-                </div>
-                
-                <div class="mb-6">
-                    <label for="pointsAmount" class="block text-sm font-medium text-gray-700 mb-1">点数变动</label>
-                    <div class="flex">
-                        <button id="decreasePoints" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-l-lg transition-colors">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <input type="number" id="pointsAmount" value="10" min="1" class="w-full border-y border-gray-300 text-center py-2 input-focus">
-                        <button id="increasePoints" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-r-lg transition-colors">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
-                    <p class="mt-2 text-xs text-gray-500">正数表示增加点数，负数表示减少点数</p>
+                <div id="modalContent" class="mb-6">
+                    <!-- 模态框内容会通过JavaScript动态生成 -->
                 </div>
                 
                 <div class="flex justify-end space-x-3">
-                    <button onclick="closePointsModal()" class="btn-secondary">取消</button>
-                    <button onclick="savePointsChanges()" class="btn-primary">保存</button>
+                    <button onclick="closeModal()" class="btn-secondary">
+                        取消
+                    </button>
+                    <button id="modalConfirmBtn" onclick="confirmModalAction()" class="btn-primary">
+                        确认
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 点数调整模态框 -->
+    <div id="pointsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl max-w-lg w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-dark" id="pointsModalTitle">调整点数</h3>
+                    <button onclick="closePointsModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <p class="text-sm text-gray-700 mb-4">为用户 <span id="pointsModalUsername" class="font-medium text-primary"></span> 调整推推点数</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="pointsModalCurrentPoints" class="block text-sm font-medium text-gray-700 mb-1">当前点数</label>
+                            <input type="number" id="pointsModalCurrentPoints" readonly class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-gray-100">
+                        </div>
+                        
+                        <div>
+                            <label for="pointsModalNewPoints" class="block text-sm font-medium text-gray-700 mb-1">新点数</label>
+                            <input type="number" id="pointsModalNewPoints" min="0" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="pointsModalReason" class="block text-sm font-medium text-gray-700 mb-1">调整原因</label>
+                        <textarea id="pointsModalReason" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus" placeholder="请输入点数调整原因..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button onclick="closePointsModal()" class="btn-secondary">
+                        取消
+                    </button>
+                    <button onclick="savePointsAdjustment()" class="btn-primary">
+                        保存调整
+                    </button>
                 </div>
             </div>
         </div>
@@ -371,6 +597,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化页面
+            initAdminPage();
+            
             // 用户菜单切换
             const userMenuBtn = document.getElementById('userMenuBtn');
             const userMenu = document.getElementById('userMenu');
@@ -380,22 +609,10 @@
                 userMenu.classList.toggle('hidden');
             });
             
-            // 移动端菜单切换
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-            });
-            
             // 点击其他区域关闭菜单
             document.addEventListener('click', function(e) {
                 if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
                     userMenu.classList.add('hidden');
-                }
-                
-                if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
                 }
             });
             
@@ -409,89 +626,495 @@
             // 点数增减按钮
             document.getElementById('decreasePoints').addEventListener('click', function() {
                 const pointsInput = document.getElementById('pointsAmount');
-                let value = parseInt(pointsInput.value);
-                if (value > 1) {
-                    pointsInput.value = value - 1;
+                const currentValue = parseInt(pointsInput.value);
+                if (currentValue > 1) {
+                    pointsInput.value = currentValue - 10;
                 }
             });
             
             document.getElementById('increasePoints').addEventListener('click', function() {
                 const pointsInput = document.getElementById('pointsAmount');
-                let value = parseInt(pointsInput.value);
-                pointsInput.value = value + 1;
+                pointsInput.value = parseInt(pointsInput.value) + 10;
             });
         });
         
-        // 打开点数管理模态框
-        function openPointsModal(username) {
-            const pointsModal = document.getElementById('pointsModal');
-            const pointsModalTitle = document.getElementById('pointsModalTitle');
-            const pointsModalUsername = document.getElementById('pointsModalUsername');
-            const pointsModalCurrentPoints = document.getElementById('pointsModalCurrentPoints');
+        // 初始化管理页面
+        function initAdminPage() {
+            // 初始化视频数据
+            const videoData = [
+                {
+                    id: 1,
+                    title: '零基础学剪辑',
+                    package: '基础套餐',
+                    date: '2025-07-20'
+                },
+                {
+                    id: 2,
+                    title: '短视频拍摄技巧',
+                    package: '基础套餐',
+                    date: '2025-07-18'
+                },
+                {
+                    id: 3,
+                    title: '热门背景音乐推荐',
+                    package: '基础套餐',
+                    date: '2025-07-15'
+                },
+                {
+                    id: 4,
+                    title: '高级转场技巧',
+                    package: '专业套餐',
+                    date: '2025-07-22'
+                },
+                {
+                    id: 5,
+                    title: '色彩校正与调色',
+                    package: '专业套餐',
+                    date: '2025-07-20'
+                },
+                {
+                    id: 6,
+                    title: '音效处理与配乐',
+                    package: '专业套餐',
+                    date: '2025-07-18'
+                },
+                {
+                    id: 7,
+                    title: '专业级调色技巧',
+                    package: '高级套餐',
+                    date: '2025-07-22'
+                },
+                {
+                    id: 8,
+                    title: '高级特效合成',
+                    package: '高级套餐',
+                    date: '2025-07-20'
+                },
+                {
+                    id: 9,
+                    title: '多机位剪辑技巧',
+                    package: '高级套餐',
+                    date: '2025-07-18'
+                }
+            ];
             
-            pointsModalTitle.textContent = '管理点数';
-            pointsModalUsername.textContent = username;
-            pointsModalCurrentPoints.textContent = document.getElementById(username + 'Points').textContent;
+            // 渲染视频表格
+            const videoTableBody = document.querySelector('#tab2Content table tbody');
+            videoTableBody.innerHTML = '';
             
-            // 存储当前操作的用户名
-            pointsModal.dataset.username = username;
+            videoData.forEach(video => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${video.id}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${video.title}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium ${getPackageColorClass(video.package)} rounded-full">${video.package}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${video.date}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="viewVideoDetails(${video.id})" class="text-primary hover:text-primary/80 mr-3">查看</button>
+                        <button onclick="editVideo(${video.id})" class="text-yellow-600 hover:text-yellow-800 mr-3">编辑</button>
+                        <button onclick="deleteVideo(${video.id})" class="text-danger hover:text-danger/80">删除</button>
+                    </td>
+                `;
+                videoTableBody.appendChild(row);
+            });
             
-            pointsModal.classList.remove('hidden');
+            // 初始化消息数据
+            const messageData = [
+                {
+                    id: 1,
+                    sender: 'robin',
+                    title: '关于高级套餐的咨询',
+                    date: '2025-07-22 14:30',
+                    status: '未回复'
+                },
+                {
+                    id: 2,
+                    sender: 'text',
+                    title: '请求增加推推点数',
+                    date: '2025-07-21 09:15',
+                    status: '未回复'
+                },
+                {
+                    id: 3,
+                    sender: 'robin',
+                    title: '视频下载问题',
+                    date: '2025-07-20 16:45',
+                    status: '已回复'
+                }
+            ];
+            
+            // 渲染消息表格
+            const messageTableBody = document.querySelector('#tab4Content table tbody');
+            messageTableBody.innerHTML = '';
+            
+            messageData.forEach(message => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                <i class="fa fa-user text-gray-500"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">${message.sender}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${message.title}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${message.date}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium ${message.status === '未回复' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'} rounded-full">${message.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="viewMessage(${message.id})" class="text-primary hover:text-primary/80">查看详情</button>
+                    </td>
+                `;
+                messageTableBody.appendChild(row);
+            });
+            
+            // 初始化点数记录数据
+            const pointsRecordData = [
+                {
+                    id: 1,
+                    username: 'robin',
+                    change: '+200',
+                    afterPoints: 350,
+                    reason: '新用户注册奖励',
+                    date: '2025-07-20 10:00'
+                },
+                {
+                    id: 2,
+                    username: 'text',
+                    change: '+100',
+                    afterPoints: 180,
+                    reason: '新用户注册奖励',
+                    date: '2025-07-18 15:30'
+                },
+                {
+                    id: 3,
+                    username: 'robin',
+                    change: '-200',
+                    afterPoints: 150,
+                    reason: '订购专业套餐',
+                    date: '2025-07-22 11:45'
+                }
+            ];
+            
+            // 渲染点数记录表格
+            const pointsTableBody = document.querySelector('#tab5Content table tbody');
+            pointsTableBody.innerHTML = '';
+            
+            pointsRecordData.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${record.id}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${record.username}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm ${record.change.startsWith('+') ? 'text-green-600' : 'text-red-600'}">
+                        ${record.change}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        ${record.afterPoints}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-500">
+                        ${record.reason}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${record.date}
+                    </td>
+                `;
+                pointsTableBody.appendChild(row);
+            });
         }
         
-        // 关闭点数管理模态框
-        function closePointsModal() {
-            document.getElementById('pointsModal').classList.add('hidden');
+        // 切换选项卡
+        function switchTab(tabIndex) {
+            // 隐藏所有选项卡内容
+            document.getElementById('tab1Content').classList.add('hidden');
+            document.getElementById('tab2Content').classList.add('hidden');
+            document.getElementById('tab3Content').classList.add('hidden');
+            document.getElementById('tab4Content').classList.add('hidden');
+            document.getElementById('tab5Content').classList.add('hidden');
+            
+            // 移除所有选项卡的活动状态
+            document.getElementById('tab1').classList.remove('tab-active');
+            document.getElementById('tab2').classList.remove('tab-active');
+            document.getElementById('tab3').classList.remove('tab-active');
+            document.getElementById('tab4').classList.remove('tab-active');
+            document.getElementById('tab5').classList.remove('tab-active');
+            
+            // 显示选中的选项卡内容并添加活动状态
+            document.getElementById(`tab${tabIndex}Content`).classList.remove('hidden');
+            document.getElementById(`tab${tabIndex}`).classList.add('tab-active');
+            
+            // 如果是视频管理选项卡，重新加载视频数据
+            if (tabIndex === 2) {
+                initAdminPage();
+            }
         }
         
-        // 保存点数变更
-        function savePointsChanges() {
-            const pointsModal = document.getElementById('pointsModal');
-            const username = pointsModal.dataset.username;
-            const pointsAmount = parseInt(document.getElementById('pointsAmount').value);
-            const currentPointsElement = document.getElementById(username + 'Points');
-            const currentPoints = parseInt(currentPointsElement.textContent);
-            
-            // 更新点数
-            const newPoints = currentPoints + pointsAmount;
-            currentPointsElement.textContent = newPoints;
-            
-            // 显示成功提示（这里应该是调用GitHub API创建issue）
-            alert(`已成功为用户 ${username} ${pointsAmount > 0 ? '增加' : '减少'} ${Math.abs(pointsAmount)} 点推推点数！`);
-            
-            // 关闭模态框
-            closePointsModal();
-            
-            // 模拟创建GitHub issue
-            createIssue(username, `调整推推点数: ${pointsAmount > 0 ? '+' : ''}${pointsAmount}`, 
-                `管理员为用户 ${username} ${pointsAmount > 0 ? '增加' : '减少'}了 ${Math.abs(pointsAmount)} 点推推点数。\n当前点数: ${newPoints}`);
+        // 获取套餐颜色类
+        function getPackageColorClass(packageName) {
+            switch(packageName) {
+                case '基础套餐':
+                    return 'bg-green-100 text-green-800';
+                case '专业套餐':
+                    return 'bg-blue-100 text-blue-800';
+                case '高级套餐':
+                    return 'bg-purple-100 text-purple-800';
+                default:
+                    return 'bg-gray-100 text-gray-800';
+            }
         }
         
         // 查看用户详情
         function viewUserDetails(username) {
-            alert(`查看用户 ${username} 的详细信息（这里应该跳转到用户详情页）`);
+            openModal(
+                `用户 ${username} 详情`,
+                `<p class="text-sm text-gray-700 mb-4">这里显示用户 ${username} 的详细信息和订购历史。</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">套餐名称</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订购时间</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">到期时间</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm font-medium text-gray-900">专业套餐</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    2025-07-22
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    2025-08-22
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">有效</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm font-medium text-gray-900">基础套餐</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    2025-06-15
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    2025-07-15
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">已过期</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>`
+            );
         }
         
-        // 回复消息
-        function replyMessage(username, messageId) {
-            const message = prompt(`回复 ${username}:`, '');
-            if (message) {
-                alert(`已回复 ${username} 的消息（这里应该调用GitHub API创建issue）`);
-                
-                // 模拟创建GitHub issue
-                createIssue(username, `回复消息 #${messageId}`, `管理员回复: ${message}`);
-            }
+        // 打开点数调整模态框
+        function openPointsModal(username, currentPoints) {
+            document.getElementById('pointsModalUsername').textContent = username;
+            document.getElementById('pointsModalCurrentPoints').value = currentPoints;
+            document.getElementById('pointsModalNewPoints').value = currentPoints;
+            document.getElementById('pointsModal').classList.remove('hidden');
         }
         
-        // 模拟创建GitHub issue
-        function createIssue(username, title, body) {
-            console.log(`创建GitHub issue: ${title}`);
-            console.log(`用户: ${username}`);
-            console.log(`内容: ${body}`);
+        // 关闭点数调整模态框
+        function closePointsModal() {
+            document.getElementById('pointsModal').classList.add('hidden');
+        }
+        
+        // 保存点数调整
+        function savePointsAdjustment() {
+            const username = document.getElementById('pointsModalUsername').textContent;
+            const currentPoints = parseInt(document.getElementById('pointsModalCurrentPoints').value);
+            const newPoints = parseInt(document.getElementById('pointsModalNewPoints').value);
+            const reason = document.getElementById('pointsModalReason').value;
             
-            // 这里应该是实际调用GitHub API的代码
-            // 为了演示，我们只在控制台输出信息
+            if (!reason) {
+                alert('请输入点数调整原因');
+                return;
+            }
+            
+            // 模拟保存点数调整
+            console.log(`为用户 ${username} 调整点数: ${currentPoints} -> ${newPoints}`);
+            console.log(`调整原因: ${reason}`);
+            
+            // 更新用户列表中的点数显示
+            const userRows = document.querySelectorAll('#tab1Content table tbody tr');
+            userRows.forEach(row => {
+                if (row.querySelector('div.text-sm.font-medium.text-gray-900').textContent === username) {
+                    row.querySelector('td:nth-child(4)').textContent = newPoints;
+                }
+            });
+            
+            // 添加新的点数记录
+            const pointsTableBody = document.querySelector('#tab5Content table tbody');
+            const newRecordId = pointsTableBody.querySelectorAll('tr').length + 1;
+            const change = newPoints > currentPoints ? `+${newPoints - currentPoints}` : `-${currentPoints - newPoints}`;
+            
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ${newRecordId}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">${username}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm ${change.startsWith('+') ? 'text-green-600' : 'text-red-600'}">
+                    ${change}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    ${newPoints}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-500">
+                    ${reason}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    ${new Date().toLocaleString()}
+                </td>
+            `;
+            
+            // 插入到表格顶部
+            pointsTableBody.insertBefore(newRow, pointsTableBody.firstChild);
+            
+            closePointsModal();
+            alert(`已成功为用户 ${username} 调整点数: ${currentPoints} -> ${newPoints}`);
         }
-    </script>
-</body>
-</html>
+        
+        // 打开模态框
+        function openModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+        
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+        
+        // 确认模态框操作
+        function confirmModalAction() {
+            // 这个函数会根据不同的操作进行不同的处理
+            // 具体实现会在调用 openModal 时根据需要设置
+            closeModal();
+        }
+        
+        // 添加新视频
+        function addNewVideo() {
+            openModal(
+                '添加新视频',
+                `<div class="space-y-6">
+                    <div>
+                        <label for="newVideoTitle" class="block text-sm font-medium text-gray-700 mb-1">视频标题</label>
+                        <input type="text" id="newVideoTitle" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus" placeholder="请输入视频标题...">
+                    </div>
+                    
+                    <div>
+                        <label for="newVideoPackage" class="block text-sm font-medium text-gray-700 mb-1">所属套餐</label>
+                        <select id="newVideoPackage" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus">
+                            <option value="基础套餐">基础套餐</option>
+                            <option value="专业套餐">专业套餐</option>
+                            <option value="高级套餐">高级套餐</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="newVideoDescription" class="block text-sm font-medium text-gray-700 mb-1">视频描述</label>
+                        <textarea id="newVideoDescription" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 input-focus" placeholder="请输入视频描述..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">视频文件</label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                            <div class="space-y-1 text-center">
+                                <i class="fa fa-cloud-upload text-gray-400 text-4xl"></i>
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="newVideoFile" class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-primary/80 focus-within:outline-none">
+                                        <span>上传视频文件</span>
+                                        <input id="newVideoFile" name="newVideoFile" type="file" class="sr-only">
+                                    </label>
+                                    <p class="pl-1">或拖放文件</p>
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                    支持 MP4, MOV, AVI 格式
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            );
+            
+            // 修改确认按钮文本
+            document.getElementById('modalConfirmBtn').textContent = '添加视频';
+            
+            // 设置确认按钮点击事件
+            document.getElementById('modalConfirmBtn').onclick = function() {
+                const title = document.getElementById('newVideoTitle').value;
+                const packageName = document.getElementById('newVideoPackage').value;
+                
+                if (!title) {
+                    alert('请输入视频标题');
+                    return;
+                }
+                
+                // 模拟添加新视频
+                console.log(`添加新视频: ${title} (${packageName})`);
+                
+                // 更新视频表格
+                initAdminPage();
+                
+                closeModal();
+                alert('视频添加成功！');
+            };
+        }
+        
+        // 查看视频详情
+        function viewVideoDetails(videoId) {
+            // 模拟获取视频详情
+            const videoDetails = {
+                id: videoId,
+                title: '视频标题示例',
+                package: '专业套餐',
+                date: '2025-07-22',
+                description: '这是一个关于视频编辑技巧的教学视频，详细讲解了如何使用各种转场效果和调色方法，适合有一定基础的用户学习。',
+                thumbnail: 'https://picsum.photos/seed/video' + videoId + '/600/300',
+                duration: '15:30',
+                views: 1254,
+                downloads: 320
+            };
+            
+            openModal(
+                `视频详情: ${videoDetails.title}`,
+                `<div class="space-y-6">
+                    <div class="rounded-lg overflow-hidden bg-gray-100">
+                        <img src="${videoDetails.thumbnail}" alt="${videoDetails.title}" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <span class="px-2 py-1 text-xs font-medium ${getPackageColorClass(videoDetails.package)} rounded-full">${videoDetails.package}</span>
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    <span class="mr-3"><i class="fa fa-eye mr-1"></i> ${videoDetails.views}</span>
