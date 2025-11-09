@@ -1,0 +1,227 @@
+/* 全局重置与基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft JhengHei", "PMingLiU", serif; /* 繁体中文适配字体 */
+}
+
+body {
+    color: #333;
+    background-color: #f9f9f9;
+    line-height: 1.6;
+}
+
+/* 容器样式 - 居中布局 */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background-color: #2c5282; /* 深蓝色主色调，贴合官网风格 */
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+    background-color: #3182ce; /* hover/激活状态浅蓝色 */
+}
+
+/* 标题区域样式 */
+.header {
+    background-color: #fff;
+    padding: 60px 0;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.title-small {
+    font-size: 24px;
+    color: #4a5568;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+}
+
+.title-large {
+    font-size: 48px;
+    color: #2c5282;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+/* 主要内容区域样式 */
+.content {
+    padding: 50px 0;
+    background-color: #fff;
+    margin: 30px auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.content h2 {
+    color: #2c5282;
+    font-size: 32px;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.content h3 {
+    color: #4a5568;
+    font-size: 24px;
+    margin: 25px 0 15px;
+}
+
+.content h4 {
+    color: #718096;
+    font-size: 20px;
+    margin: 20px 0 10px;
+}
+
+.content p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #4a5568;
+}
+
+/* 首页画廊样式 */
+.gallery {
+    margin-top: 40px;
+}
+
+.gallery-images {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.image-item {
+    width: 30%;
+    height: 200px;
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: #718096;
+    font-size: 16px;
+}
+
+/* 成员介绍样式 */
+.members-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.member-item {
+    background-color: #f7fafc;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* 展區/目的/材料列表样式 */
+.exhibition-areas,
+.purpose-list,
+.materials-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.area-item,
+.purpose-item,
+.material-category {
+    background-color: #f7fafc;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 4px solid #3182ce;
+}
+
+.material-category ul {
+    list-style: disc;
+    margin-left: 30px;
+    margin-top: 10px;
+}
+
+.material-category li {
+    font-size: 18px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+
+/* 页脚样式 */
+.footer {
+    background-color: #2c5282;
+    color: #fff;
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+
+.footer p {
+    font-size: 16px;
+    color: #e2e8f0;
+}
+
+/* 响应式布局 - 适配移动端 */
+@media (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .title-large {
+        font-size: 36px;
+    }
+
+    .title-small {
+        font-size: 20px;
+    }
+
+    .members-list {
+        grid-template-columns: 1fr;
+    }
+
+    .image-item {
+        width: 100%;
+    }
+
+    .content h2 {
+        font-size: 28px;
+    }
+
+    .content p {
+        font-size: 16px;
+    }
+}
